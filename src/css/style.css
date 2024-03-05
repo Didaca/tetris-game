@@ -1,0 +1,41 @@
+@font-face {
+	font-family: Teletoon;
+	src: url('../resources/Font/TeletoonLowercase-8w0Z.ttf') format('truetype');
+}
+
+:root {
+	--fps: #547518;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-size: 1em;
+	line-height: 1.5;
+	background-image: url('../resources/Background_css.png');
+	overflow: hidden;
+}
+
+#game {
+	position: absolute;
+	display: flex;
+	justify-content: center; 
+	width: 100vw;
+	height: 100vh;
+	z-index: 0;
+}
+
+.fps {
+	position: absolute;
+	left: 10px;
+	bottom: 5px;
+	font-weight: 400;
+	color: var(--fps);
+	z-index: 1;
+	font-family: 'Teletoon', 'Arial Narrow', Arial, sans-serif;
+	/* visibility: hidden; */
+}
