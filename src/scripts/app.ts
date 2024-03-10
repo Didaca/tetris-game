@@ -71,7 +71,7 @@ class Game extends PIXI.Container {
         this.addTetrisLogo();
         this.cMatrix.init();
         this.addChild(this.cMatrix as any);
-        this.addPause();
+        this.addPauseInfo();
         this.addScoreText();
         this.addScore();
         this.addNextText();
@@ -130,7 +130,7 @@ class Game extends PIXI.Container {
             this.cMatrix.moveDown();
             return
         }
-        
+
         if (this.cMatrix.isGameOver()) {
             this.stopGame();
             this.sound.play(SoundsKey.GAMEOVER);
@@ -177,11 +177,9 @@ class Game extends PIXI.Container {
     }
 
     // add Pause text section on the bottom right side 
-    private addPause(): void {
-        this.pause.text.alpha = 0;
+    private addPauseInfo(): void {
         this.pauseInfo.text.alpha = 1;
         // to load font-family correctly
-        this.addChild(this.pause.text)
         setTimeout(() => {
             this.addChild(this.pauseInfo.text);
         }, 500)
@@ -190,8 +188,8 @@ class Game extends PIXI.Container {
     // show or hide text`s 'Pause'
     private addremovePause(): void {
         this.isPause ?
-            this.pause.text.alpha = 1
-            : this.pause.text.alpha = 0;
+            this.addChild(this.pause.text)
+            : this.removeChild(this.pause.text);
     }
 
     // removing text`s 'Game Over' and message how to restart the Game
@@ -244,7 +242,7 @@ class Game extends PIXI.Container {
         this.speedNormal = this.gameSpeed;
         this.score.resetScore();
         this.cMatrix.resetMatrix();
-        this.addPause();
+        this.addPauseInfo();
         this.gameLoop();
         this.gamePlay = true;
     }
