@@ -6,7 +6,7 @@ import { Texts } from '../../enums/Texts';
 export class Score extends BaseText {
     readonly x: number = 545; //545
     readonly y: number = 111; //111
-    private _score: number = 0;
+    private _score: number = 99;
 
     constructor() {
         super()
@@ -26,8 +26,8 @@ export class Score extends BaseText {
         this._score += lines;
         if (this._score > 99) {
             this.text.style.fontSize = 18;
-            this.text.x = 636;
-            this.text.y = 107;
+            this.text.x = 551;
+            this.text.y = 111;
         }
         this.text.text = this._score;
     }
