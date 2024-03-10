@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2021 EGT Digital - All rights reserved.
- * 
- * File: cPause.ts
- * 
- * Written by Deyan Ivanov <deyan.ivanov@egt-digital.com> on  31.01.24 1:43 pm.
- * Last modified: 31.01.24 1:43 pm.
- * 
- * More information at: https://egt-digital.com/
- */
 import { TextCenter } from "./cTextCenter";
 
 

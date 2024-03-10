@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2021 EGT Digital - All rights reserved.
- * 
- * File: cText.ts
- * 
- * Written by Deyan Ivanov <deyan.ivanov@egt-digital.com> on  24.01.24 10:21 am.
- * Last modified: 24.01.24 10:21 am.
- * 
- * More information at: https://egt-digital.com/
- */
 import * as PIXI from 'pixi.js';
 import { BaseText } from '../baseComponents/cBaseText';
 import { Texts } from '../../enums/Texts';

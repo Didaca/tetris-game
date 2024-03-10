@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2021 EGT Digital - All rights reserved.
- * 
- * File: cBaseElement.ts
- * 
- * Written by Deyan Ivanov <deyan.ivanov@egt-digital.com> on  26.01.24 9:26 am.
- * Last modified: 26.01.24 9:26 am.
- * 
- * More information at: https://egt-digital.com/
- */
 import * as PIXI from 'pixi.js';
 import { IElement } from '../../interfaces/IElement';
 import { emptyTexture } from '../../textures/textures';

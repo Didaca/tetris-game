@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2021 EGT Digital - All rights reserved.
- * 
- * File: cSounds.ts
- * 
- * Written by Deyan Ivanov <deyan.ivanov@egt-digital.com> on  13.02.24 10:45 am.
- * Last modified: 13.02.24 10:45 am.
- * 
- * More information at: https://egt-digital.com/
- */
 // import { sound } from '@pixi/sound';
 const { Howl } = require('howler');
 

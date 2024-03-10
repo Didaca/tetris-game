@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2021 EGT Digital - All rights reserved.
- * 
- * File: cMatrix.ts
- * 
- * Written by Deyan Ivanov <deyan.ivanov@egt-digital.com> on  01.02.24 8:20 am.
- * Last modified: 01.02.24 8:20 am.
- * 
- * More information at: https://egt-digital.com/
- */
 import * as PIXI from 'pixi.js';
 import { Piller } from './elements/cPiller';
 import { Stick } from './elements/cStick';
