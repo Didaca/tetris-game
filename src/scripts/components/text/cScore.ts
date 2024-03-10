@@ -6,7 +6,7 @@ import { Texts } from '../../enums/Texts';
 export class Score extends BaseText {
     readonly x: number = 545; //545
     readonly y: number = 111; //111
-    private _score: number = 99;
+    private _score: number = 0;
 
     constructor() {
         super()

@@ -249,16 +249,16 @@ class Game extends PIXI.Container {
         this.gamePlay = true;
     }
 
-    // increase speed with 25%, remove setInterval & return new setInterval 
+    // increase speed with 5%, remove setInterval & return new setInterval 
     private increaseSpeed(): void {
-        this.speedNormal -= Math.floor(this.speedNormal * 0.25);
+        this.speedNormal -= Math.floor(this.speedNormal * 0.05);
     }
 
-    // checking for every 5 points to increase the Speed
+    // checking for every 20 points to increase the Speed
     private checkToIncreaseSpeed(lines: number): void {
         for (let i = 0; i < lines; i++) {
             this.movesCount++;
-            if (this.movesCount % 5 === 0) {
+            if (this.movesCount % 20 === 0) {
                 this.speedtoUP = true;
                 this.movesCount = 0;
             }
