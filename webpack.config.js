@@ -26,7 +26,7 @@ const config = {
         port: 9000,
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js']
+        extensions: ['.tsx', '.ts', '.js', '.json']
     },
     plugins: [
         new CleanWebpackPlugin(),
@@ -34,9 +34,10 @@ const config = {
             patterns: [
                 { from: 'src/index.html' },
                 { from: 'src/css/style.css', to: 'css/' },
-                { from: '*/resources/*', to: 'resources/[name][ext]' },
-                { from: '*/resources/Font/*', to: 'resources/Font/[name][ext]' },
-                { from: '*/resources/Sounds/*', to: 'resources/Sounds/[name][ext]' }
+                { from: '*/resources/font/*', to: 'resources/font/[name][ext]' },
+                { from: '*/resources/images/*', to: 'resources/images/[name][ext]' },
+                { from: '*/resources/packages/*', to: 'resources/packages/[name][ext]' },
+                { from: '*/resources/sounds/*', to: 'resources/sounds/[name][ext]' }
             ],
         }),
 

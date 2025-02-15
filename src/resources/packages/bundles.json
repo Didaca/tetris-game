@@ -1,0 +1,26 @@
+{
+    "bundles":[
+       {
+          "name":"load-game",
+          "assets":[
+             {
+                "name":"background",
+                "srcs":"background_portrait.png"
+             }
+          ]
+       },
+       {
+          "name":"base-elements",
+          "assets":[
+             {
+                "name":"cube-base",
+                "srcs":"cube_base.png"
+             },
+             {
+                "name":"piller-base",
+                "srcs":"piller_base.png"
+             }
+          ]
+       }
+    ]
+ }

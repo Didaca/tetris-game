@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { BaseText } from '../baseComponents/cBaseText';
+import { BaseText } from '../baseComponents/BaseText';
 import { Texts } from '../../enums/Texts';
 
 
