@@ -7,6 +7,8 @@ import { Cube } from './elements/Cube';
 import { Container } from './Container';
 import { BaseElement } from './baseComponents/BaseElement';
 import { Numbers } from '../enums/Numbers';
+import { StickR } from './elements/StickR';
+import { ZR } from './elements/ZR';
 
 
 
@@ -17,6 +19,7 @@ export class Matrix extends PIXI.Container {
     readonly firstRow: number = 2;
     readonly spriteSize: number = 20;
     protected _zIndex: number = 20;
+    protected _baseElementsCount: number = 3;
     readonly name: string = 'Matrix';
     public arrayElements: Array<BaseElement>;
     protected baseTexture: any;
@@ -82,7 +85,7 @@ export class Matrix extends PIXI.Container {
     }
 
     private setVisibility(a: any) {
-        a.alpha === 1 ? a.alpha = 0 : a.alpha = 1; 
+        a.alpha === 1 ? a.alpha = 0 : a.alpha = 1;
     }
 
     public get element(): any {
@@ -98,30 +101,32 @@ export class Matrix extends PIXI.Container {
             .filter((sprite: any) => sprite.texture !== this.baseTexture);
         return (result.length === Numbers.ZERO);
     }
-    
+
     // generate element and push in stack[]
     private generateElement(): void {
-        // const element: number = Math.floor(Math.random() * this.baseElementsCount);
-        const element = 2;
+        const element: number = Math.floor(Math.random() * this._baseElementsCount);
+        // const element = 3;
         switch (element) {
-            // case 0:
+            case 0:
+                this.arrayElements.push(new ZR(this));
+                break;
             //     this.arrayElements.push(new Piller(this));
             //     break;
-            // case 1:
-            //     this.arrayElements.push(new Stick());
-            //     break;
+            case 1:
+                this.arrayElements.push(new StickR(this));
+                break;
             case 2:
                 this.arrayElements.push(new Cube(this));
                 break;
-            // case 3:
-            //     this.arrayElements.push(new Z());
-            //     break;
+            case 3:
+                this.arrayElements.push(new ZR(this));
+                break;
             // case 4:
             //     this.arrayElements.push(new T());
             //     break;
         }
     }
-    
+
     public drawElement(): void {
         this.generateElement();
         this.tetromino = this.arrayElements.shift();

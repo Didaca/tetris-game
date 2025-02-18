@@ -21,7 +21,11 @@ export class Canvas {
     private backgroundContainer: any;
 
     constructor() {
-        this.app = new PIXI.Application({resizeTo: window});
+        this.app = new PIXI.Application({
+            resizeTo: window,
+            antialias: true,
+            resolution: 1
+        });
 
         (globalThis as any as GlobalThis).__PIXI_APP__ = this.app;
 

@@ -10,11 +10,8 @@ export class Cube extends BaseElement {
     readonly elementHeight: number = 2;
     readonly elementLenght: number;
     public image: any;
-    // protected type: string = 'cube';
     protected _texture: any;
-    protected _stoped: boolean = false;
     protected _base: any;
-    protected _startPosition: number;
     protected _boardPlate: Matrix;
 
     constructor(board: Matrix) {
@@ -24,7 +21,6 @@ export class Cube extends BaseElement {
         this._texture = Textures.getTexture('CUBE');
         this.image = Textures.getTexture('CUBE_IMAGE');
         this.elementLenght = this.elementHeight;
-        this._startPosition = 8;
         this.coordinates = [];
     }
 
@@ -64,12 +60,16 @@ export class Cube extends BaseElement {
         this.clean(row, startDrawPoint);
         this.reDrawDown(row, startDrawPoint);
         this.setDownCoordinates();
-        // [17, 4]
+        // [28, 8]
         // console.log(this.coordinates)
     }
 
     public left(): void {
         const [row, startDrawPoint]: number[] = this.coordinates;
+
+        if (this._stoped) {
+            return;
+        }
 
         if (
             (startDrawPoint === 0) ||
@@ -85,6 +85,10 @@ export class Cube extends BaseElement {
 
     public right(): void {
         const [row, startDrawPoint]: number[] = this.coordinates;
+
+        if (this._stoped) {
+            return;
+        }
 
         if (
             (startDrawPoint === this._boardPlate.matrixCol - this.elementLenght) ||

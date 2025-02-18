@@ -1,11 +1,10 @@
 import * as PIXI from 'pixi.js';
-import { injectable } from 'tsyringe';
 import Texture from '../textures/Texture';
-import { Canvas } from './Canvas';
 
-@injectable()
+
 export class Logo extends PIXI.Container {
     public name: string = 'GameLogo';
+    protected _zIndex: number = 10;
     private positionX: number = 234.5;
     private logoWidth: number = 255;
     private logoHeight: number = 100;

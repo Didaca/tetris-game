@@ -4,7 +4,7 @@ import Log from '../components/Log';
 
 // @injectable()
 class Textures {
-    public complited: boolean = false;
+    protected _complited: boolean = false;
     protected logoTexture: any;
     protected baseTexture: any;
     protected backgroundTexture: any;
@@ -19,6 +19,9 @@ class Textures {
     protected tImage: any;
     protected zRTexture: any;
     protected zRImage: any;
+    protected buttonLeft: any;
+    protected buttonRight: any;
+    protected buttonRotate: any;
 
     constructor() {
         this.init();
@@ -33,20 +36,27 @@ class Textures {
         this.backgroundTexture = await PIXI.Assets.load('/resources/images/background.png');
         this.transparentTexture = await PIXI.Assets.load('/resources/images/transparent.png');
         this.cubeTexture = await PIXI.Assets.load('/resources/images/cube.png');
-        this.cubeImage = await PIXI.Assets.load('/resources/images/cubeImage.png')
-        this.pillerTexture = await PIXI.Assets.load('/resources/images/piller.png')
-        this.pillerImage = await PIXI.Assets.load('/resources/images/pillerImage.png')
-        this.stickRTexture = await PIXI.Assets.load('/resources/images/stickR.png')
-        this.stickRImage = await PIXI.Assets.load('/resources/images/stickRImage.png')
-        this.tTexture = await PIXI.Assets.load('/resources/images/t.png')
-        this.tImage = await PIXI.Assets.load('/resources/images/tImage.png')
-        this.zRTexture = await PIXI.Assets.load('/resources/images/zR.png')
-        this.zRImage = await PIXI.Assets.load('/resources/images/zRImage.png')
+        this.cubeImage = await PIXI.Assets.load('/resources/images/cubeImage.png');
+        this.pillerTexture = await PIXI.Assets.load('/resources/images/piller.png');
+        this.pillerImage = await PIXI.Assets.load('/resources/images/pillerImage.png');
+        this.stickRTexture = await PIXI.Assets.load('/resources/images/stickR.png');
+        this.stickRImage = await PIXI.Assets.load('/resources/images/stickRImage.png');
+        this.tTexture = await PIXI.Assets.load('/resources/images/t.png');
+        this.tImage = await PIXI.Assets.load('/resources/images/tImage.png');
+        this.zRTexture = await PIXI.Assets.load('/resources/images/zR.png');
+        this.zRImage = await PIXI.Assets.load('/resources/images/zRImage.png');
+        this.buttonLeft = await PIXI.Assets.load('/resources/images/left.png');
+        this.buttonRight = await PIXI.Assets.load('/resources/images/right.png');
+        this.buttonRotate = await PIXI.Assets.load('/resources/images/rotation.png');
 
 
         if (this.zRImage) {
-            this.complited = true;
+            this._complited = true;
         }
+    }
+
+    get complited(): any {
+        return this._complited;
     }
 
     public getTexture(name: string): any {
@@ -80,6 +90,12 @@ class Textures {
                 return this.zRTexture;
             case 'Z_R_IMAGE':
                 return this.zRImage;
+            case 'B_LEFT':
+                return this.buttonLeft;
+            case 'B_RIGHT':
+                return this.buttonRight;
+            case 'ROTATE':
+                return this.buttonRotate;
             default:
                 break;
         }

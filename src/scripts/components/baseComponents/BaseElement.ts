@@ -2,13 +2,14 @@ import * as PIXI from 'pixi.js';
 import { IElement } from '../../interfaces/IElement';
 import { Numbers } from '../../enums/Numbers';
 
+
 export class BaseElement implements IElement {
     readonly elementHeight: number = 0;
     readonly elementLenght: number = 0;
-    lastRowContainerIndex: number = 0;
     public image: PIXI.Texture | undefined;
     protected isDrawn: boolean = true;
-    protected _position: string = '0';
+    protected _position: number = Numbers.ONE;
+    protected _stoped: boolean = false;
     protected _texture: PIXI.Texture | undefined;
     protected _startPosition: number = 8;
     protected coordinates: number[] = [];
@@ -19,6 +20,12 @@ export class BaseElement implements IElement {
     down(): void {}
 
     reDraw(): void {}
+
+    left(): void {}
+
+    right(): void {}
+
+    rotate(): void {}
 
     protected setCoordinates(a: number, b: number): void {
         if(this.coordinates.length > 0) {
