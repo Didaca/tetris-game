@@ -2,14 +2,14 @@ import * as PIXI from 'pixi.js';
 import { GlobalThis } from '../interfaces/IAppParams';
 import { Names } from '../enums/Names';
 import 'reflect-metadata';
-import { container, injectable } from 'tsyringe';
+import { container, singleton } from 'tsyringe';
 import Background from './Background';
 import View from './View';
 import Textures from '../textures/Texture';
 
 
 
-@injectable()
+@singleton()
 export class Canvas {
     public body: HTMLElement;
     public app: PIXI.Application<HTMLCanvasElement>;

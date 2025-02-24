@@ -8,6 +8,7 @@ import { container } from 'tsyringe';
 import { ButtonLeft } from './components/ButtonLeft';
 import { ButtonRight } from './components/ButtonRight';
 import { ButtonRotate } from './components/ButtonRotate';
+import { Next } from './components/Next';
 
 
 
@@ -20,14 +21,13 @@ class Game {
     protected buttonL: any;
     protected buttonR: any;
     protected buttonRotate: any;
-    protected _stepSpeed: number = 500;
+    protected nextCount: any;
+    protected _stepSpeed: number = 200;
     protected _timeForAssets: number = 100;
 
     constructor() {
         this.intervalId = setInterval(() => { });
         this.loadGameIntervalId = setInterval(this.afterTexturesInit.bind(this), this._timeForAssets);
-        // window.addEventListener('click', this.left.bind(this));
-
     }
 
     protected afterTexturesInit(): void {
@@ -38,12 +38,12 @@ class Game {
     }
 
     private init(): void {
-        Log.log('ASSETS LOADED!')
         this.setResolves();
         if (this.tamplate) {
             this.loadGameContainers(this.tamplate);
             this.matrix = new Matrix(this.tamplate);
             this.element = this.matrix.element;
+            this.showNextElement();
             this.updateButtons();
             this.gameLoop();
         }
@@ -57,13 +57,14 @@ class Game {
     private move(): void {
         if (this.element.stoped) {
             this.matrix?.drawElement();
+            this.showNextElement();
             this.element = this.matrix?.element;
             this.updateButtons();
         }
 
         if (!this.element.isDrawn) {
-            Log.log('GAME OVER!');
             clearInterval(this.intervalId);
+            Log.log('GAME OVER!');
             return;
         }
 
@@ -81,6 +82,7 @@ class Game {
         this.buttonL = container.resolve(ButtonLeft);
         this.buttonR = container.resolve(ButtonRight);
         this.buttonRotate = container.resolve(ButtonRotate);
+        this.nextCount = container.resolve(Next);
     }
 
     private loadGameContainers(game: Canvas): void {
@@ -88,6 +90,11 @@ class Game {
         game.addContainer(this.buttonL);
         game.addContainer(this.buttonR);
         game.addContainer(this.buttonRotate);
+        game.addContainer(this.nextCount);
+    }
+
+    private showNextElement(): void {
+        (this.nextCount.children?.at(0) as any).texture = this.matrix?.getnextElementImage();
     }
 
 

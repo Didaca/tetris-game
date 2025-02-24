@@ -13,7 +13,8 @@
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
     "watch": "webpack --watch",
-    "serve": "webpack serve"
+    "serve": "webpack serve",
+    "testing": "npm run build:dev && npm run serve"
   },
   "author": "DVI",
   "license": "MIT",

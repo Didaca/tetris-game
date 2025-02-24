@@ -1,23 +1,18 @@
 import { BaseElement } from '../baseComponents/BaseElement';
-import { injectable } from 'tsyringe';
-import 'reflect-metadata';
 import Textures from '../../textures/Texture';
 import { Matrix } from '../Matrix';
 
 
-@injectable()
 export class Cube extends BaseElement {
     readonly elementHeight: number = 2;
     readonly elementLenght: number;
     public image: any;
     protected _texture: any;
     protected _base: any;
-    protected _boardPlate: Matrix;
 
-    constructor(board: Matrix) {
+    constructor(private matrix: Matrix) {
         super()
-        this._boardPlate = board;
-        this._base = board.baseT;
+        this._base = matrix.baseT;
         this._texture = Textures.getTexture('CUBE');
         this.image = Textures.getTexture('CUBE_IMAGE');
         this.elementLenght = this.elementHeight;
@@ -31,13 +26,13 @@ export class Cube extends BaseElement {
     public draw(): void {
         for (let row = 0; row < this.elementHeight; row++) {
 
-            if (!this._boardPlate.toGO()) {
+            if (!this.matrix.toGO()) {
                 this.isDrawn = false;
                 return;
             }
 
-            (this._boardPlate.children[row].children?.at(this._startPosition) as any).texture = this._texture;
-            (this._boardPlate.children[row].children?.at(this._startPosition + 1) as any).texture = this._texture;
+            (this.matrix.children[row].children?.at(this._startPosition) as any).texture = this._texture;
+            (this.matrix.children[row].children?.at(this._startPosition + 1) as any).texture = this._texture;
 
             this.setCoordinates(row, this._startPosition);
 
@@ -47,7 +42,7 @@ export class Cube extends BaseElement {
     public down(): void {
         const [row, startDrawPoint]: number[] = this.coordinates;
 
-        if (row === this._boardPlate.matrixRow - 1) {
+        if (row === this.matrix.matrixRow - 1) {
             this._stoped = true;
             return;
         }
@@ -91,7 +86,7 @@ export class Cube extends BaseElement {
         }
 
         if (
-            (startDrawPoint === this._boardPlate.matrixCol - this.elementLenght) ||
+            (startDrawPoint === this.matrix.matrixCol - this.elementLenght) ||
             !this.isMoveRight(row, startDrawPoint)
         ) {
             return;
@@ -106,8 +101,8 @@ export class Cube extends BaseElement {
 
     private isMoveDown(r: number, point: number): boolean {
         let go: boolean = true;
-        if ((this._boardPlate.children[r + 1] as any).children[point].texture !== this._base ||
-            (this._boardPlate.children[r + 1] as any).children[point + 1].texture !== this._base) {
+        if ((this.matrix.children[r + 1] as any).children[point].texture !== this._base ||
+            (this.matrix.children[r + 1] as any).children[point + 1].texture !== this._base) {
             go = false;
         }
         return go;
@@ -115,8 +110,8 @@ export class Cube extends BaseElement {
 
     private isMoveLeft(r: number, point: number): boolean {
         let go: boolean = true;
-        if ((this._boardPlate.children[r] as any).children[point - 1].texture !== this._base ||
-            (this._boardPlate.children[r - 1] as any).children[point - 1].texture !== this._base) {
+        if ((this.matrix.children[r] as any).children[point - 1].texture !== this._base ||
+            (this.matrix.children[r - 1] as any).children[point - 1].texture !== this._base) {
             go = false;
         }
         return go;
@@ -124,8 +119,8 @@ export class Cube extends BaseElement {
 
     private isMoveRight(r: number, point: number): boolean {
         let go: boolean = true;
-        if ((this._boardPlate.children[r] as any).children[point + this.elementLenght].texture !== this._base ||
-            (this._boardPlate.children[r - 1] as any).children[point + this.elementLenght].texture !== this._base) {
+        if ((this.matrix.children[r] as any).children[point + this.elementLenght].texture !== this._base ||
+            (this.matrix.children[r - 1] as any).children[point + this.elementLenght].texture !== this._base) {
             go = false;
         }
         return go;
@@ -133,32 +128,32 @@ export class Cube extends BaseElement {
 
     private clean(r: number, point: number): void {
         for (let i = 0; i < this.elementLenght; i++) {
-            (this._boardPlate.children[r - i].children?.at(point) as any).texture = this._base;
-            (this._boardPlate.children[r - i].children?.at(point + 1) as any).texture = this._base;
+            (this.matrix.children[r - i].children?.at(point) as any).texture = this._base;
+            (this.matrix.children[r - i].children?.at(point + 1) as any).texture = this._base;
 
         }
     }
 
     private reDrawDown(r: number, point: number): void {
         for (let i = 0; i < this.elementLenght; i++) {
-            (this._boardPlate.children[r + i].children?.at(point) as any).texture = this._texture;
-            (this._boardPlate.children[r + i].children?.at(point + 1) as any).texture = this._texture;
+            (this.matrix.children[r + i].children?.at(point) as any).texture = this._texture;
+            (this.matrix.children[r + i].children?.at(point + 1) as any).texture = this._texture;
 
         }
     }
 
     private reDrawLeft(r: number, point: number): void {
         for (let i = 0; i < this.elementLenght; i++) {
-            (this._boardPlate.children[r].children?.at(point - i) as any).texture = this._texture;
-            (this._boardPlate.children[r - 1].children?.at(point - i) as any).texture = this._texture;
+            (this.matrix.children[r].children?.at(point - i) as any).texture = this._texture;
+            (this.matrix.children[r - 1].children?.at(point - i) as any).texture = this._texture;
 
         }
     }
 
     private reDrawRight(r: number, point: number): void {
         for (let i = 0; i < this.elementLenght; i++) {
-            (this._boardPlate.children[r].children?.at(point + i) as any).texture = this._texture;
-            (this._boardPlate.children[r - 1].children?.at(point + i) as any).texture = this._texture;
+            (this.matrix.children[r].children?.at(point + i) as any).texture = this._texture;
+            (this.matrix.children[r - 1].children?.at(point + i) as any).texture = this._texture;
 
         }
     }

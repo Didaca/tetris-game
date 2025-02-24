@@ -1,8 +1,7 @@
 import * as PIXI from 'pixi.js';
 import Log from '../components/Log';
-// import { injectable } from 'tsyringe';
 
-// @injectable()
+
 class Textures {
     protected _complited: boolean = false;
     protected logoTexture: any;
@@ -38,20 +37,21 @@ class Textures {
         this.cubeTexture = await PIXI.Assets.load('/resources/images/cube.png');
         this.cubeImage = await PIXI.Assets.load('/resources/images/cubeImage.png');
         this.pillerTexture = await PIXI.Assets.load('/resources/images/piller.png');
-        this.pillerImage = await PIXI.Assets.load('/resources/images/pillerImage.png');
+        this.pillerImage = await PIXI.Assets.load('/resources/images/ppI.png');
         this.stickRTexture = await PIXI.Assets.load('/resources/images/stickR.png');
         this.stickRImage = await PIXI.Assets.load('/resources/images/stickRImage.png');
         this.tTexture = await PIXI.Assets.load('/resources/images/t.png');
         this.tImage = await PIXI.Assets.load('/resources/images/tImage.png');
         this.zRTexture = await PIXI.Assets.load('/resources/images/zR.png');
         this.zRImage = await PIXI.Assets.load('/resources/images/zRImage.png');
-        this.buttonLeft = await PIXI.Assets.load('/resources/images/left.png');
-        this.buttonRight = await PIXI.Assets.load('/resources/images/right.png');
-        this.buttonRotate = await PIXI.Assets.load('/resources/images/rotation.png');
+        this.buttonLeft = await PIXI.Assets.load('/resources/images/arr-l.png');
+        this.buttonRight = await PIXI.Assets.load('/resources/images/arr-r.png');
+        this.buttonRotate = await PIXI.Assets.load('/resources/images/rotate.png');
 
 
         if (this.zRImage) {
             this._complited = true;
+            Log.log('ASSETS LOADED!');
         }
     }
 

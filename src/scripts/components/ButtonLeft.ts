@@ -1,17 +1,17 @@
 import * as PIXI from 'pixi.js';
 import Texture from '../textures/Texture';
 import { BaseElement } from './baseComponents/BaseElement';
-import { injectable, singleton } from 'tsyringe';
+import { singleton } from 'tsyringe';
 
-@injectable()
+
 @singleton()
 export class ButtonLeft extends PIXI.Container {
     public name: string = 'LeftButton';
     protected _zIndex: number = 30;
     private positionX: number = 50;
     private positionY: number = 700;
-    private buttonWidth: number = 90;
-    private buttonHeight: number = 65;
+    private buttonWidth: number = 70;
+    private buttonHeight: number = 60;
     private element: any = {};
 
     constructor() {

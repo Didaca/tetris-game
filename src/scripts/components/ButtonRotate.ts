@@ -1,18 +1,17 @@
 import * as PIXI from 'pixi.js';
 import Texture from '../textures/Texture';
 import { BaseElement } from './baseComponents/BaseElement';
-import { injectable, singleton } from 'tsyringe';
+import { singleton } from 'tsyringe';
 
 
-@injectable()
 @singleton()
 export class ButtonRotate extends PIXI.Container {
     public name: string = 'RotateButton';
     protected _zIndex: number = 30;
-    private positionX: number = 234.5;
-    private positionY: number = 728;
-    private buttonWidth: number = 90;
-    private buttonHeight: number = 65;
+    private positionX: number = 235;
+    private positionY: number = 700;
+    private buttonWidth: number = 70;
+    private buttonHeight: number = 60;
     private element: any = {};
 
     constructor() {
@@ -22,7 +21,7 @@ export class ButtonRotate extends PIXI.Container {
 
     private init(): void {
         const button: PIXI.Sprite = new PIXI.Sprite(Texture.getTexture('ROTATE'));
-        button.anchor.set(0.5);
+        button.anchor.set(0.5, 0);
         button.width = this.buttonWidth;
         button.height = this.buttonHeight;
         button.x = this.positionX;

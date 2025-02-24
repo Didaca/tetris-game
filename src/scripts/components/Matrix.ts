@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import 'reflect-metadata';
-import { container, injectable } from 'tsyringe';
+import { container, inject, singleton } from 'tsyringe';
 import Textures from '../textures/Texture';
 import { Canvas } from './Canvas';
 import { Cube } from './elements/Cube';
@@ -9,30 +9,30 @@ import { BaseElement } from './baseComponents/BaseElement';
 import { Numbers } from '../enums/Numbers';
 import { StickR } from './elements/StickR';
 import { ZR } from './elements/ZR';
+import { T } from './elements/T';
+import { Piller } from './elements/Piller';
 
 
 
-@injectable()
+@singleton()
 export class Matrix extends PIXI.Container {
     readonly matrixRow: number = 30;
     readonly matrixCol: number = 17;
     readonly firstRow: number = 2;
     readonly spriteSize: number = 20;
     protected _zIndex: number = 20;
-    protected _baseElementsCount: number = 3;
+    protected _baseElementsCount: number = 10;
     readonly name: string = 'Matrix';
     public arrayElements: Array<BaseElement>;
     protected baseTexture: any;
     private containerBounceX: number;
     private containerBounceY: number;
-    private canvas: Canvas;
     private tetromino: any;
 
-    constructor(board: Canvas) {
+    constructor(private canvas: Canvas) {
         super()
         this.tetromino = '';
         this.arrayElements = [];
-        this.canvas = board;
         this.baseTexture = Textures.getTexture('BASE');
         this.containerBounceX = Math.round((this.canvas.width - (this.spriteSize * this.matrixCol)) / 2);
         this.containerBounceY = Math.round((this.canvas.height - (this.spriteSize * this.matrixRow)) / 3);
@@ -84,8 +84,13 @@ export class Matrix extends PIXI.Container {
         )
     }
 
+    
     private setVisibility(a: any) {
         a.alpha === 1 ? a.alpha = 0 : a.alpha = 1;
+    }
+    
+    public getnextElementImage(): PIXI.Texture {
+        return (this.arrayElements[0].image as PIXI.Texture);
     }
 
     public get element(): any {
@@ -105,13 +110,11 @@ export class Matrix extends PIXI.Container {
     // generate element and push in stack[]
     private generateElement(): void {
         const element: number = Math.floor(Math.random() * this._baseElementsCount);
-        // const element = 3;
+        // const element = 0;
         switch (element) {
             case 0:
-                this.arrayElements.push(new ZR(this));
+                this.arrayElements.push(new Piller(this));
                 break;
-            //     this.arrayElements.push(new Piller(this));
-            //     break;
             case 1:
                 this.arrayElements.push(new StickR(this));
                 break;
@@ -121,9 +124,30 @@ export class Matrix extends PIXI.Container {
             case 3:
                 this.arrayElements.push(new ZR(this));
                 break;
-            // case 4:
-            //     this.arrayElements.push(new T());
-            //     break;
+            case 4:
+                this.arrayElements.push(new T(this));
+                break;
+            case 5:
+                this.arrayElements.push(new Piller(this));
+                break;
+            case 6:
+                this.arrayElements.push(new StickR(this));
+                break;
+            case 7:
+                this.arrayElements.push(new Cube(this));
+                break;
+            case 8:
+                this.arrayElements.push(new ZR(this));
+                break;
+            case 9:
+                this.arrayElements.push(new T(this));
+                break;
+            case 10:
+                this.arrayElements.push(new StickR(this));
+                break;
+            default:
+                this.arrayElements.push(new T(this));
+                break;
         }
     }
 

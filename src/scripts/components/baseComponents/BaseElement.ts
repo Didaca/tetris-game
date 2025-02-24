@@ -15,17 +15,17 @@ export class BaseElement implements IElement {
     protected coordinates: number[] = [];
 
 
-    draw(): void {}
+    draw(): void {};
 
-    down(): void {}
+    down(): void {};
 
-    reDraw(): void {}
+    reDraw(): void {};
 
-    left(): void {}
+    left(): void {};
 
-    right(): void {}
+    right(): void {};
 
-    rotate(): void {}
+    rotate(): void {};
 
     protected setCoordinates(a: number, b: number): void {
         if(this.coordinates.length > 0) {
@@ -34,22 +34,26 @@ export class BaseElement implements IElement {
         } else {
             this.coordinates.push(a, b);
         }
-    }
+    };
 
     protected cleanCoordinates(): void {
         this.coordinates = [];
-    }
+    };
+
+    protected setUpCoordinates(): void {
+        this.coordinates[0] -= 1;
+    };
 
     protected setDownCoordinates(): void {
         this.coordinates[0] += 1;
-    }
+    };
 
     protected setLeftCoordinates(): void {
         this.coordinates[1] -= 1;
-    }
+    };
 
     protected setRightCoordinates(): void {
         this.coordinates[1] += 1;
-    }
+    };
 
 }
