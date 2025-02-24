@@ -1,7 +1,7 @@
 # Tetris Game with PIXI JS - Mobile version 
 
 - game "NEW DESIGN"
-!["New_Design"](src/readme/new design.png)
+!["New_Design"](src/readme/new_design.png)
 
 ## Game info:
 - game font: "Teletoon lowercase" 
