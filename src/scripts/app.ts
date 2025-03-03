@@ -9,6 +9,9 @@ import { ButtonLeft } from './components/ButtonLeft';
 import { ButtonRight } from './components/ButtonRight';
 import { ButtonRotate } from './components/ButtonRotate';
 import { Next } from './components/Next';
+import { Score } from './components/text/Score';
+import { NextText } from './components/text/NextText';
+import { ScoreText } from './components/text/ScoreText';
 
 
 
@@ -22,10 +25,14 @@ class Game {
     protected buttonR: any;
     protected buttonRotate: any;
     protected nextCount: any;
-    protected _stepSpeed: number = 200;
+    protected nextText: any;
+    protected scoreText: any;
+    protected score: Score;
+    protected _stepSpeed: number = 300;
     protected _timeForAssets: number = 100;
 
     constructor() {
+        this.score = new Score();
         this.intervalId = setInterval(() => { });
         this.loadGameIntervalId = setInterval(this.afterTexturesInit.bind(this), this._timeForAssets);
     }
@@ -54,8 +61,12 @@ class Game {
 
     }
 
+
     private move(): void {
+
         if (this.element.stoped) {
+            this.matrix?.cleanLines();
+            this.updateScore();
             this.matrix?.drawElement();
             this.showNextElement();
             this.element = this.matrix?.element;
@@ -82,6 +93,8 @@ class Game {
         this.buttonL = container.resolve(ButtonLeft);
         this.buttonR = container.resolve(ButtonRight);
         this.buttonRotate = container.resolve(ButtonRotate);
+        this.nextText = container.resolve(NextText);
+        this.scoreText = container.resolve(ScoreText);
         this.nextCount = container.resolve(Next);
     }
 
@@ -90,11 +103,19 @@ class Game {
         game.addContainer(this.buttonL);
         game.addContainer(this.buttonR);
         game.addContainer(this.buttonRotate);
+        game.addContainer(this.nextText);
         game.addContainer(this.nextCount);
+        game.addContainer(this.scoreText);
+        game.addContainer(this.score.text);
     }
 
     private showNextElement(): void {
         (this.nextCount.children?.at(0) as any).texture = this.matrix?.getnextElementImage();
+    }
+
+    private updateScore(): void {
+        (this.matrix?.linesCount as number) > 0 ? this.score.updateScore(this.matrix?.linesCount as number) : this.score.updateScore(0);
+        this.matrix?.setLinesCount(0);
     }
 
 

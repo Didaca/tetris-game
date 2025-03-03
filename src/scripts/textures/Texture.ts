@@ -21,6 +21,9 @@ class Textures {
     protected buttonLeft: any;
     protected buttonRight: any;
     protected buttonRotate: any;
+    protected lineAnimation: any;
+    protected nextElementText: any;
+    protected scoreElementText: any;
 
     constructor() {
         this.init();
@@ -37,16 +40,19 @@ class Textures {
         this.cubeTexture = await PIXI.Assets.load('/resources/images/cube.png');
         this.cubeImage = await PIXI.Assets.load('/resources/images/cubeImage.png');
         this.pillerTexture = await PIXI.Assets.load('/resources/images/piller.png');
-        this.pillerImage = await PIXI.Assets.load('/resources/images/ppI.png');
+        this.pillerImage = await PIXI.Assets.load('/resources/images/pillerImage.png');
         this.stickRTexture = await PIXI.Assets.load('/resources/images/stickR.png');
         this.stickRImage = await PIXI.Assets.load('/resources/images/stickRImage.png');
         this.tTexture = await PIXI.Assets.load('/resources/images/t.png');
         this.tImage = await PIXI.Assets.load('/resources/images/tImage.png');
         this.zRTexture = await PIXI.Assets.load('/resources/images/zR.png');
         this.zRImage = await PIXI.Assets.load('/resources/images/zRImage.png');
-        this.buttonLeft = await PIXI.Assets.load('/resources/images/arr-l.png');
-        this.buttonRight = await PIXI.Assets.load('/resources/images/arr-r.png');
+        this.buttonLeft = await PIXI.Assets.load('/resources/images/left.png');
+        this.buttonRight = await PIXI.Assets.load('/resources/images/right.png');
         this.buttonRotate = await PIXI.Assets.load('/resources/images/rotate.png');
+        this.nextElementText = await PIXI.Assets.load('/resources/images/next.png');
+        this.scoreElementText = await PIXI.Assets.load('/resources/images/score.png');
+        this.lineAnimation = await PIXI.Assets.load('/resources/animations/line_anime.json');
 
 
         if (this.zRImage) {
@@ -57,6 +63,15 @@ class Textures {
 
     get complited(): any {
         return this._complited;
+    }
+
+    public getAnimation(name: string): any {
+        switch (name) {
+            case 'LINE':
+                return this.lineAnimation.animations;
+            default:
+                break;
+        }
     }
 
     public getTexture(name: string): any {
@@ -70,6 +85,10 @@ class Textures {
                 return this.transparentTexture;
             case 'BASE':
                 return this.baseTexture;
+            case 'NEXT':
+                return this.nextElementText;
+            case 'SCORE':
+                return this.scoreElementText;
             case 'CUBE':
                 return this.cubeTexture;
             case 'CUBE_IMAGE':

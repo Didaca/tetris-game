@@ -10,7 +10,7 @@ export class ButtonRight extends PIXI.Container {
     protected _zIndex: number = 30;
     private positionX: number = 339;
     private positionY: number = 700;
-    private buttonWidth: number = 70;
+    private buttonWidth: number = 90;
     private buttonHeight: number = 60;
     private element: any = {};
 

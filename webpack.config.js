@@ -35,6 +35,7 @@ const config = {
                 { from: 'src/index.html' },
                 { from: 'src/css/style.css', to: 'css/' },
                 { from: '*/resources/font/*', to: 'resources/font/[name][ext]' },
+                { from: '*/resources/animations/*', to: 'resources/animations/[name][ext]' },
                 { from: '*/resources/images/*', to: 'resources/images/[name][ext]' },
                 { from: '*/resources/packages/*', to: 'resources/packages/[name][ext]' },
                 { from: '*/resources/sounds/*', to: 'resources/sounds/[name][ext]' }

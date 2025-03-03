@@ -1,11 +1,13 @@
 import * as PIXI from 'pixi.js';
 import { BaseText } from '../baseComponents/BaseText';
 import { Texts } from '../../enums/Texts';
+import { injectable } from 'tsyringe';
 
 
+@injectable()
 export class Score extends BaseText {
-    readonly x: number = 545; //545
-    readonly y: number = 111; //111
+    readonly x: number = 440;
+    readonly y: number = 207;
     private _score: number = 0;
 
     constructor() {
@@ -17,7 +19,7 @@ export class Score extends BaseText {
                 letterSpacing: 1.5,
                 fill: 0xfcebb6,
             }))
-        this.text.anchor.set(0.5);
+        this.text.anchor.set(1, 0);
         this.text.x = this.x;
         this.text.y = this.y;
     }
@@ -26,8 +28,8 @@ export class Score extends BaseText {
         this._score += lines;
         if (this._score > 99) {
             this.text.style.fontSize = 18;
-            this.text.x = 551;
-            this.text.y = 111;
+            this.text.x = 410;
+            this.text.y = 67;
         }
         this.text.text = this._score;
     }

@@ -48,7 +48,7 @@ export class Canvas {
         this.backgroundContainer.addChild(backgroundSprite);
     }
 
-    public addContainer(container: PIXI.Container): void {
+    public addContainer(container: any): void {
         this.viewContainer.addChild(container);
     }
 

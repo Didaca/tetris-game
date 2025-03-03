@@ -1,16 +1,16 @@
 import * as PIXI from 'pixi.js';
 import { singleton } from 'tsyringe';
-import Texture from '../textures/Texture';
+import Texture from '../../textures/Texture';
 
 
 @singleton()
-export class Next extends PIXI.Container {
-    public name: string = 'NextElement';
+export class NextText extends PIXI.Container {
+    public name: string = 'Next';
     protected _zIndex: number = 20;
-    private positionX: number = 65;
-    private positionY: number = 207;
-    private logoWidth: number = 60;
-    private logoHeight: number = 50;
+    private positionX: number = 50;
+    private positionY: number = 117;
+    private logoWidth: number = 30;
+    private logoHeight: number = 80;
 
     constructor() {
         super();
@@ -19,7 +19,7 @@ export class Next extends PIXI.Container {
     }
 
     private init(): void {
-        const sprite: PIXI.Sprite = new PIXI.Sprite(Texture.getTexture('TRANSPARENT'));
+        const sprite: PIXI.Sprite = new PIXI.Sprite(Texture.getTexture('NEXT'));
         sprite.anchor.set(1, 0)
         sprite.width = this.logoWidth;
         sprite.height = this.logoHeight;

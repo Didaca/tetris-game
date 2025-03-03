@@ -1,0 +1,26 @@
+import { container } from "tsyringe";
+import View from "./View";
+import Background from "./Background";
+import { Logo } from "./Logo";
+import { Next } from "./Next";
+import { Canvas } from "./Canvas";
+import { ButtonLeft } from "./ButtonLeft";
+import { ButtonRight } from "./ButtonRight";
+import { ButtonRotate } from "./ButtonRotate";
+import { Matrix } from "./Matrix";
+import { NextText } from "./text/NextText";
+import { Score } from "./text/Score";
+
+container.register<Canvas>("Canvas", {useClass: Canvas});
+container.register<View>("View", {useClass: View});
+container.register<Background>("Background", {useClass: Background});
+container.register<Matrix>("Matrix", {useClass: Matrix});
+container.register<Logo>("Logo", {useClass: Logo});
+container.register<Next>("Next", {useClass: Next});
+container.register<ButtonLeft>("ButtonLeft", {useClass: ButtonLeft});
+container.register<ButtonRight>("ButtonRight", {useClass: ButtonRight});
+container.register<ButtonRotate>("ButtonRotate", {useClass: ButtonRotate});
+container.register<NextText>("NextText", {useClass: NextText});
+container.register<Score>("Score", {useClass: Score});
+
+export { container };

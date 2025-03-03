@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
+import gsap from 'gsap';
 import 'reflect-metadata';
-import { container, inject, singleton } from 'tsyringe';
+import { container, singleton } from 'tsyringe';
 import Textures from '../textures/Texture';
 import { Canvas } from './Canvas';
 import { Cube } from './elements/Cube';
@@ -18,10 +19,11 @@ import { Piller } from './elements/Piller';
 export class Matrix extends PIXI.Container {
     readonly matrixRow: number = 30;
     readonly matrixCol: number = 17;
-    readonly firstRow: number = 2;
+    readonly firstVisiblyRow: number = 2;
     readonly spriteSize: number = 20;
     protected _zIndex: number = 20;
     protected _baseElementsCount: number = 10;
+    protected _linesCount: number = 0;
     readonly name: string = 'Matrix';
     public arrayElements: Array<BaseElement>;
     protected baseTexture: any;
@@ -45,6 +47,7 @@ export class Matrix extends PIXI.Container {
         this.canvas.addContainer(this);
         this.drawElement();
         this.generateElement();
+        // this.getFrames();
     }
 
     // loading rowContainer with sprites
@@ -84,11 +87,11 @@ export class Matrix extends PIXI.Container {
         )
     }
 
-    
+
     private setVisibility(a: any) {
         a.alpha === 1 ? a.alpha = 0 : a.alpha = 1;
     }
-    
+
     public getnextElementImage(): PIXI.Texture {
         return (this.arrayElements[0].image as PIXI.Texture);
     }
@@ -101,11 +104,67 @@ export class Matrix extends PIXI.Container {
         return this.baseTexture;
     }
 
+    public get linesCount(): number {
+        return this._linesCount;
+    }
+
+    public setLinesCount(a: number): void {
+        this._linesCount = a;
+    }
+
     public toGO(): boolean {
-        const result = (this.children[this.firstRow] as any).children
+        const result = (this.children[this.firstVisiblyRow] as any).children
             .filter((sprite: any) => sprite.texture !== this.baseTexture);
         return (result.length === Numbers.ZERO);
     }
+
+    private isLine(row: number): boolean {
+        const result = (this.children[row] as any).children
+            .filter((sprite: any) => sprite.texture !== this.baseTexture);
+        return (result.length === this.matrixCol);
+    }
+
+    // public async anime(sprite: any): Promise<void> {
+    //     await gsap.timeline({ repeat: 2, yoyo: true })
+    //         .to(sprite, { alpha: -0.01 })
+    //         .to(sprite, { alpha: 1 });
+    // }
+
+    public cleanLines(): void {
+        const lines: number[] = this.getlines();
+        if (lines.length > 0) {
+            this.setLinesCount(lines.length);
+            let r: any = lines[0];
+            for (let i = 0; i < lines.length; i++) {
+                while (r > 0) {
+                    const sprites = (this.children[r - Numbers.ONE] as any)?.children.filter((sprite: PIXI.Sprite) => sprite.texture);
+                    (this.children[r] as any)?.children.map((sprite: PIXI.Sprite) => sprite.texture = sprites.shift().texture);
+
+                    r -= Numbers.ONE;
+                }
+            }
+        }
+    }
+
+    private getlines(): number[] {
+        let lines: number[] = [];
+        const row: number = this.getRowToLine();
+
+        for (let i = row; i > row - 4; i -= 1) {
+            if (this.isLine(i)) {
+                lines.push(i);
+            }
+        }
+        return lines;
+    }
+
+    private getRowToLine(): number {
+        let row: number = this.tetromino.coordinates[0];
+        row === this.matrixRow - 1 ? row : row += 1;
+        return row;
+    }
+
+
 
     // generate element and push in stack[]
     private generateElement(): void {
@@ -156,5 +215,26 @@ export class Matrix extends PIXI.Container {
         this.tetromino = this.arrayElements.shift();
         this.tetromino.draw();
     }
+
+    // private async getFrames(r: number): Promise<void> {
+    //     // const container: [] = [];
+
+    //     const lineAnime = new PIXI.AnimatedSprite(Textures.getAnimation('LINE').line)
+    //     // console.log(lineAnime)
+
+    //     lineAnime.width = 340
+    //     lineAnime.height = 20
+    //     lineAnime.x = 67
+    //     lineAnime.y = r * 20 + 67
+    //     lineAnime.play()
+
+    //     this.addChild(lineAnime)
+    //     setTimeout(() => 
+    //         [lineAnime.stop(),
+    //             lineAnime.destroy()
+    //         ]
+    //     , 2000)
+
+    // }
 
 }
