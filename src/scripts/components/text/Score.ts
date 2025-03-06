@@ -26,10 +26,11 @@ export class Score extends BaseText {
 
     public updateScore(lines: number) {
         this._score += lines;
+        if (this._score > 9) {
+            this.text.x = this.x + 12;
+        }
         if (this._score > 99) {
-            this.text.style.fontSize = 18;
-            this.text.x = 410;
-            this.text.y = 67;
+            this.text.x = this.x + 16;
         }
         this.text.text = this._score;
     }

@@ -12,12 +12,14 @@ import { Next } from './components/Next';
 import { Score } from './components/text/Score';
 import { NextText } from './components/text/NextText';
 import { ScoreText } from './components/text/ScoreText';
+import { UIContainer } from './components/UI';
 
 
 
 class Game {
     protected tamplate: Canvas | undefined;
     protected matrix: Matrix | undefined;
+    protected uiContainer: UIContainer | undefined;
     protected intervalId: ReturnType<typeof setInterval>;
     protected loadGameIntervalId: ReturnType<typeof setInterval>;
     protected element: any;
@@ -28,7 +30,7 @@ class Game {
     protected nextText: any;
     protected scoreText: any;
     protected score: Score;
-    protected _stepSpeed: number = 300;
+    protected _stepSpeed: number = 30;
     protected _timeForAssets: number = 100;
 
     constructor() {
@@ -61,22 +63,22 @@ class Game {
 
     }
 
-
     private move(): void {
-
+        
         if (this.element.stoped) {
+
+            if (this.matrix?.isGameOver()) {
+                clearInterval(this.intervalId);
+                Log.log('GAME OVER!');
+                return;
+            }
+            
             this.matrix?.cleanLines();
             this.updateScore();
             this.matrix?.drawElement();
             this.showNextElement();
             this.element = this.matrix?.element;
             this.updateButtons();
-        }
-
-        if (!this.element.isDrawn) {
-            clearInterval(this.intervalId);
-            Log.log('GAME OVER!');
-            return;
         }
 
         this.element.down();
@@ -90,6 +92,7 @@ class Game {
 
     private setResolves(): void {
         this.tamplate = container.resolve(Canvas);
+        this.uiContainer = container.resolve(UIContainer);
         this.buttonL = container.resolve(ButtonLeft);
         this.buttonR = container.resolve(ButtonRight);
         this.buttonRotate = container.resolve(ButtonRotate);
@@ -100,9 +103,10 @@ class Game {
 
     private loadGameContainers(game: Canvas): void {
         game.addContainer(new Logo());
-        game.addContainer(this.buttonL);
-        game.addContainer(this.buttonR);
-        game.addContainer(this.buttonRotate);
+        this.uiContainer?.addChild(this.buttonL);
+        this.uiContainer?.addChild(this.buttonR);
+        this.uiContainer?.addChild(this.buttonRotate);
+        game.addContainer(this.uiContainer);
         game.addContainer(this.nextText);
         game.addContainer(this.nextCount);
         game.addContainer(this.scoreText);

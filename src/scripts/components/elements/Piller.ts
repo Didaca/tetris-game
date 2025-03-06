@@ -5,13 +5,8 @@ import { Matrix } from '../Matrix';
 
 
 export class Piller extends BaseElement {
-    readonly elementHeight: number = 1;
-    readonly elementLenght: number = 4;
-    public image: any;
-    protected _startPosition: number = 7;
     protected _coHorizontalPosition: number = 0; // 0/1
     protected _coVerticalPosition: string = 'C'; // L/C/R/CC
-    protected _texture: any;
     protected _base: any;
 
     constructor(private matrix: Matrix) {
@@ -19,26 +14,23 @@ export class Piller extends BaseElement {
         this._base = this.matrix.baseT;
         this._texture = Textures.getTexture('PILLER');
         this.image = Textures.getTexture('PILLER_IMAGE');
-        this.coordinates = [];
+        this._config.elementHeight = 1;
+        this._config.elementLenght = 4;
+        this._config.startPosition = 7;
     }
 
     public get stoped(): boolean {
-        return this._stoped;
+        return this._config.stoped;
     }
 
     public draw(): void {
         const firstRowToDraw: number = 1;
-        for (let row = 0; row < this.elementLenght; row++) {
+        for (let row = 0; row < this._config.elementLenght; row++) {
 
-            if (!this.matrix.toGO()) {
-                this.isDrawn = false;
-                return;
-            }
-
-            (this.matrix.children[firstRowToDraw].children?.at(this._startPosition + row) as any).texture = this._texture;
+            (this.matrix.children[firstRowToDraw].children?.at(this._config.startPosition + row) as any).texture = this._texture;
 
         }
-        this.setCoordinates(firstRowToDraw, this._startPosition + 1);
+        this.setCoordinates(firstRowToDraw, this._config.startPosition + 1);
 
     }
 
@@ -46,7 +38,7 @@ export class Piller extends BaseElement {
         const [row, startDrawPoint]: number[] = this.coordinates;
 
         if (!this.isMoveDown(row, startDrawPoint)) {
-            this._stoped = true;
+            this._config.stoped = true;
             return;
         }
 
@@ -60,7 +52,7 @@ export class Piller extends BaseElement {
     public left(): void {
         const [row, startDrawPoint]: number[] = this.coordinates;
 
-        if (this._stoped) {
+        if (this._config.stoped) {
             return;
         }
 
@@ -76,7 +68,7 @@ export class Piller extends BaseElement {
     public right(): void {
         const [row, startDrawPoint]: number[] = this.coordinates;
 
-        if (this._stoped) {
+        if (this._config.stoped) {
             return;
         }
 
@@ -103,7 +95,7 @@ export class Piller extends BaseElement {
     private isMoveDown(r: number, point: number): boolean {
         let go: boolean = true;
 
-        switch (this._position) {
+        switch (this._config.position) {
             case 1:
                 if (r === this.matrix.matrixRow - 1) {
                     go = false;
@@ -137,7 +129,7 @@ export class Piller extends BaseElement {
     private isMoveLeft(r: number, point: number): boolean {
         let go: boolean = true;
 
-        switch (this._position) {
+        switch (this._config.position) {
             case 1:
                 if (point === 1) {
                     go = false;
@@ -171,7 +163,7 @@ export class Piller extends BaseElement {
 
     private isMoveRight(r: number, point: number): boolean {
         let go: boolean = true;
-        switch (this._position) {
+        switch (this._config.position) {
             case 1:
                 if (point === this.matrix.matrixCol - 3) {
                     go = false;
@@ -205,7 +197,7 @@ export class Piller extends BaseElement {
 
     private isRotate(r: number, point: number): boolean {
         let go: boolean = true;
-        switch (this._position) {
+        switch (this._config.position) {
             case 1:
                 if (r < 4) {
                     go = false;
@@ -280,7 +272,7 @@ export class Piller extends BaseElement {
     }
 
     private clean(r: number, point: number): void {
-        switch (this._position) {
+        switch (this._config.position) {
             case 1:
                 (this.matrix.children[r].children?.at(point - 1) as any).texture = this._base;
                 (this.matrix.children[r].children?.at(point) as any).texture = this._base;
@@ -299,7 +291,7 @@ export class Piller extends BaseElement {
     }
 
     private reDrawDown(r: number, point: number): void {
-        switch (this._position) {
+        switch (this._config.position) {
             case 1:
                 (this.matrix.children[r + 1].children?.at(point - 1) as any).texture = this._texture;
                 (this.matrix.children[r + 1].children?.at(point) as any).texture = this._texture;
@@ -318,10 +310,10 @@ export class Piller extends BaseElement {
     }
 
     private reDrawLeft(r: number, point: number): void {
-        switch (this._position) {
+        switch (this._config.position) {
             case 1:
                 point -= 2;
-                for (let i = 0; i < this.elementLenght; i++) {
+                for (let i = 0; i < this._config.elementLenght; i++) {
                     (this.matrix.children[r].children?.at(point + i) as any).texture = this._texture;
                 }
                 break;
@@ -337,9 +329,9 @@ export class Piller extends BaseElement {
     }
 
     private reDrawRight(r: number, point: number): void {
-        switch (this._position) {
+        switch (this._config.position) {
             case 1:
-                for (let i = 0; i < this.elementLenght; i++) {
+                for (let i = 0; i < this._config.elementLenght; i++) {
                     (this.matrix.children[r].children?.at(point + i) as any).texture = this._texture;
                 }
                 break;
@@ -355,7 +347,7 @@ export class Piller extends BaseElement {
     }
 
     private reDrawRotation(r: number, point: number): void {
-        switch (this._position) {
+        switch (this._config.position) {
             case 1:
                 (this.matrix.children[r].children?.at(point - 1) as any).texture = this._base;
                 (this.matrix.children[r].children?.at(point + 1) as any).texture = this._base;
@@ -364,7 +356,7 @@ export class Piller extends BaseElement {
                     (this.matrix.children[r - 1].children?.at(point) as any).texture = this._texture;
                     (this.matrix.children[r - 2].children?.at(point) as any).texture = this._texture;
                     (this.matrix.children[r + 1].children?.at(point) as any).texture = this._texture;
-                    this._position = 2;
+                    this._config.position = 2;
                     break;
                 }
 
@@ -373,7 +365,7 @@ export class Piller extends BaseElement {
                 (this.matrix.children[r - 3].children?.at(point) as any).texture = this._texture;
                 this.setUpCoordinates();
                 this.setCoHorizontalPozition();
-                this._position = 2;
+                this._config.position = 2;
                 break;
             case 2:
                 (this.matrix.children[r - 2].children?.at(point) as any).texture = this._base;
@@ -385,14 +377,14 @@ export class Piller extends BaseElement {
                         (this.matrix.children[r].children?.at(point - 1) as any).texture = this._texture;
                         (this.matrix.children[r].children?.at(point + 1) as any).texture = this._texture;
                         (this.matrix.children[r].children?.at(point + 2) as any).texture = this._texture;
-                        this._position = 1;
+                        this._config.position = 1;
                         break;
                     case 'L':
                         (this.matrix.children[r].children?.at(point + 1) as any).texture = this._texture;
                         (this.matrix.children[r].children?.at(point + 2) as any).texture = this._texture;
                         (this.matrix.children[r].children?.at(point + 3) as any).texture = this._texture;
                         this.setRightCoordinates();
-                        this._position = 1;
+                        this._config.position = 1;
                         this.setCVPosition();
                         break;
                     case 'R':
@@ -401,7 +393,7 @@ export class Piller extends BaseElement {
                         (this.matrix.children[r].children?.at(point - 3) as any).texture = this._texture;
                         this.setLeftCoordinates();
                         this.setLeftCoordinates();
-                        this._position = 1;
+                        this._config.position = 1;
                         this.setCVPosition();
                         break;
                     case 'CC':
@@ -409,7 +401,7 @@ export class Piller extends BaseElement {
                         (this.matrix.children[r].children?.at(point - 1) as any).texture = this._texture;
                         (this.matrix.children[r].children?.at(point - 2) as any).texture = this._texture;
                         this.setLeftCoordinates();
-                        this._position = 1;
+                        this._config.position = 1;
                         this.setCVPosition();
                         break;
                     default:

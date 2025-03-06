@@ -112,10 +112,10 @@ export class Matrix extends PIXI.Container {
         this._linesCount = a;
     }
 
-    public toGO(): boolean {
+    public isGameOver(): boolean {
         const result = (this.children[this.firstVisiblyRow] as any).children
             .filter((sprite: any) => sprite.texture !== this.baseTexture);
-        return (result.length === Numbers.ZERO);
+        return (result.length > Numbers.ZERO);
     }
 
     private isLine(row: number): boolean {
@@ -134,8 +134,8 @@ export class Matrix extends PIXI.Container {
         const lines: number[] = this.getlines();
         if (lines.length > 0) {
             this.setLinesCount(lines.length);
-            let r: any = lines[0];
             for (let i = 0; i < lines.length; i++) {
+                let r: any = lines[0];
                 while (r > 0) {
                     const sprites = (this.children[r - Numbers.ONE] as any)?.children.filter((sprite: PIXI.Sprite) => sprite.texture);
                     (this.children[r] as any)?.children.map((sprite: PIXI.Sprite) => sprite.texture = sprites.shift().texture);
@@ -150,7 +150,7 @@ export class Matrix extends PIXI.Container {
         let lines: number[] = [];
         const row: number = this.getRowToLine();
 
-        for (let i = row; i > row - 4; i -= 1) {
+        for (let i = row; i > row - 6; i -= 1) {
             if (this.isLine(i)) {
                 lines.push(i);
             }
@@ -160,8 +160,15 @@ export class Matrix extends PIXI.Container {
 
     private getRowToLine(): number {
         let row: number = this.tetromino.coordinates[0];
-        row === this.matrixRow - 1 ? row : row += 1;
-        return row;
+
+        if (row === this.matrixRow - 1) {
+            return row;
+        }
+        if (row === this.matrixRow - 2) {
+            return row += 1;
+        }
+
+        return row += 2;
     }
 
 
@@ -186,16 +193,16 @@ export class Matrix extends PIXI.Container {
             case 4:
                 this.arrayElements.push(new T(this));
                 break;
-            case 5:
+            case 8:
                 this.arrayElements.push(new Piller(this));
                 break;
             case 6:
                 this.arrayElements.push(new StickR(this));
                 break;
-            case 7:
+            case 5:
                 this.arrayElements.push(new Cube(this));
                 break;
-            case 8:
+            case 7:
                 this.arrayElements.push(new ZR(this));
                 break;
             case 9:

@@ -1,31 +1,27 @@
 import * as PIXI from 'pixi.js';
 import { IElement } from '../../interfaces/IElement';
-import { Numbers } from '../../enums/Numbers';
+import { injectable } from 'tsyringe';
+import { BaseElementConfiguration } from './BaseElementConfiguration';
 
 
-export class BaseElement implements IElement {
-    readonly elementHeight: number = 0;
-    readonly elementLenght: number = 0;
+injectable()
+export class BaseElement extends BaseElementConfiguration implements IElement {
     public image: PIXI.Texture | undefined;
-    protected isDrawn: boolean = true;
-    protected _position: number = Numbers.ONE;
-    protected _stoped: boolean = false;
     protected _texture: PIXI.Texture | undefined;
-    protected _startPosition: number = 8;
     protected coordinates: number[] = [];
 
 
-    draw(): void {};
+    public draw(): void {};
 
-    down(): void {};
+    public down(): void {};
 
-    reDraw(): void {};
+    public reDraw(): void {};
 
-    left(): void {};
+    public left(): void {};
 
-    right(): void {};
+    public right(): void {};
 
-    rotate(): void {};
+    public rotate(): void {};
 
     protected setCoordinates(a: number, b: number): void {
         if(this.coordinates.length > 0) {

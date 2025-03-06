@@ -7,7 +7,7 @@ import Texture from '../../textures/Texture';
 export class ScoreText extends PIXI.Container {
     public name: string = 'Score';
     protected _zIndex: number = 20;
-    private positionX: number = 448;
+    private positionX: number = 446;
     private positionY: number = 117;
     private logoWidth: number = 30;
     private logoHeight: number = 80;

@@ -55,7 +55,7 @@ class Textures {
         this.lineAnimation = await PIXI.Assets.load('/resources/animations/line_anime.json');
 
 
-        if (this.zRImage) {
+        if (this.scoreElementText) {
             this._complited = true;
             Log.log('ASSETS LOADED!');
         }

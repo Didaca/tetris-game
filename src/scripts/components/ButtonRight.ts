@@ -6,11 +6,11 @@ import { singleton } from 'tsyringe';
 
 @singleton()
 export class ButtonRight extends PIXI.Container {
-    public name: string = 'LeftButton';
+    public name: string = 'RightButton';
     protected _zIndex: number = 30;
-    private positionX: number = 339;
+    private positionX: number = 419;
     private positionY: number = 700;
-    private buttonWidth: number = 90;
+    private buttonWidth: number = 100;
     private buttonHeight: number = 60;
     private element: any = {};
 
@@ -21,6 +21,7 @@ export class ButtonRight extends PIXI.Container {
 
     private init(): void {
         const button: PIXI.Sprite = new PIXI.Sprite(Texture.getTexture('B_RIGHT'));
+        button.anchor.set(1, 0);
         button.width = this.buttonWidth;
         button.height = this.buttonHeight;
         button.x = this.positionX;
