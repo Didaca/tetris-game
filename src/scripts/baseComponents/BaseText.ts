@@ -1,9 +1,7 @@
 import * as PIXI from 'pixi.js';
-import { IText } from '../../interfaces/IText';
-import { Texts } from '../../enums/Texts';
 
 
-export class BaseText implements IText {
+export class BaseText {
     readonly txt: string = '';
     readonly x: number = 0;
     readonly y: number = 0;
@@ -12,7 +10,7 @@ export class BaseText implements IText {
     constructor(txt?: string) {
         this.text = new PIXI.Text(txt,
             new PIXI.TextStyle({
-                fontFamily: Texts.FONTFAMILY,
+                fontFamily: 'EnergySpike',
             }));
         this.text.anchor.set(0.5);
         this.text.x = this.x;

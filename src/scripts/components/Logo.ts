@@ -1,7 +1,8 @@
 import * as PIXI from 'pixi.js';
 import Texture from '../textures/Texture';
+import { injectable } from 'tsyringe';
 
-
+@injectable()
 export class Logo extends PIXI.Container {
     public name: string = 'GameLogo';
     protected _zIndex: number = 10;

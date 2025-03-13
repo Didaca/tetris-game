@@ -68,7 +68,7 @@ class Textures {
     public getAnimation(name: string): any {
         switch (name) {
             case 'LINE':
-                return this.lineAnimation.animations;
+                return this.lineAnimation.animations.line;
             default:
                 break;
         }

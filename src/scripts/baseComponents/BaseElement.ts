@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { IElement } from '../../interfaces/IElement';
+import { IElement } from '../interfaces/IElement';
 import { injectable } from 'tsyringe';
 import { BaseElementConfiguration } from './BaseElementConfiguration';
 

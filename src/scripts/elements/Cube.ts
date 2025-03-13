@@ -1,6 +1,6 @@
 import { BaseElement } from '../baseComponents/BaseElement';
-import Textures from '../../textures/Texture';
-import { Matrix } from '../Matrix';
+import Textures from '../textures/Texture';
+import { Matrix } from '../components/Matrix';
 
 
 export class Cube extends BaseElement {
@@ -32,11 +32,6 @@ export class Cube extends BaseElement {
 
     public down(): void {
         const [row, startDrawPoint]: number[] = this.coordinates;
-
-        if (row === this.matrix.matrixRow - 1) {
-            this._config.stoped = true;
-            return;
-        }
 
         if (!this.isMoveDown(row, startDrawPoint)) {
             this._config.stoped = true;
@@ -92,9 +87,14 @@ export class Cube extends BaseElement {
 
     private isMoveDown(r: number, point: number): boolean {
         let go: boolean = true;
+        if (r === this.matrix.matrixRow - 1) {
+            go = false;
+            return go;
+        }
         if ((this.matrix.children[r + 1] as any).children[point].texture !== this._base ||
             (this.matrix.children[r + 1] as any).children[point + 1].texture !== this._base) {
             go = false;
+            return go;
         }
         return go;
     }

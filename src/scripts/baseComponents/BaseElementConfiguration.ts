@@ -1,5 +1,5 @@
 import { injectable } from "tsyringe";
-import { IElementConfiguration } from "../../interfaces/IElementConfiguration";
+import { IElementConfiguration } from "../interfaces/IElementConfiguration";
 
 injectable()
 export class BaseElementConfiguration {

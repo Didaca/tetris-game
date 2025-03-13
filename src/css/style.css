@@ -1,6 +1,6 @@
 @font-face {
-	font-family: Teletoon;
-	src: url('../resources/font/TeletoonLowercase-8w0Z.ttf') format('truetype');
+	font-family: EnergySpike;
+	src: url('../resources/font/EnergySpike-d9Bx6.ttf') format('truetype');
 }
 
 * {
@@ -9,10 +9,8 @@
 	box-sizing: border-box;
 }
 
-body {
-	font-size: 1em;
-	line-height: 1.5;
-	background-image: url('../resources/images/background_portrait.png');
+#fake {
+	font-family: 'EnergySpike';
 }
 
 #game {

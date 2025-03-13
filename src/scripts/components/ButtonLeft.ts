@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import Texture from '../textures/Texture';
-import { BaseElement } from './baseComponents/BaseElement';
+import { BaseElement } from '../baseComponents/BaseElement';
 import { singleton } from 'tsyringe';
 
 

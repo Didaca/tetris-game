@@ -1,42 +1,45 @@
 import * as PIXI from 'pixi.js';
-import { BaseText } from '../baseComponents/BaseText';
-import { Texts } from '../../enums/Texts';
 import { injectable } from 'tsyringe';
 
 
 @injectable()
-export class Score extends BaseText {
+export class Score {
     readonly x: number = 440;
     readonly y: number = 207;
     private _score: number = 0;
+    private _text: PIXI.Text;
 
     constructor() {
-        super()
-        this.text = new PIXI.Text(`${this._score}`,
+        this._text = new PIXI.Text(`${this._score}`,
             new PIXI.TextStyle({
-                fontFamily: Texts.FONTFAMILY,
-                fontSize: 24, //24
+                fontFamily: 'EnergySpike',
+                fontSize: 24,
                 letterSpacing: 1.5,
                 fill: 0xfcebb6,
             }))
-        this.text.anchor.set(1, 0);
-        this.text.x = this.x;
-        this.text.y = this.y;
+            this._text.name = 'Score';
+        this._text.anchor.set(1, 0);
+        this._text.x = this.x;
+        this._text.y = this.y;
     }
 
     public updateScore(lines: number) {
         this._score += lines;
         if (this._score > 9) {
-            this.text.x = this.x + 12;
+            this._text.x = this.x + 12;
         }
         if (this._score > 99) {
-            this.text.x = this.x + 16;
+            this._text.x = this.x + 16;
         }
-        this.text.text = this._score;
+        this._text.text = this._score;
     }
 
     public resetScore(): void {
         this._score = 0;
-        this.text.text = this._score;
+        this._text.text = this._score;
+    }
+
+    public get text(): PIXI.Text {
+        return this._text;
     }
 }

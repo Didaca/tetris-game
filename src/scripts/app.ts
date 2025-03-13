@@ -4,39 +4,46 @@ import { Matrix } from './components/Matrix';
 import Textures from './textures/Texture';
 import Log from './components/Log';
 import { Logo } from './components/Logo';
-import { container } from 'tsyringe';
 import { ButtonLeft } from './components/ButtonLeft';
 import { ButtonRight } from './components/ButtonRight';
 import { ButtonRotate } from './components/ButtonRotate';
 import { Next } from './components/Next';
-import { Score } from './components/text/Score';
-import { NextText } from './components/text/NextText';
-import { ScoreText } from './components/text/ScoreText';
+import { Score } from './text/Score';
+import { NextText } from './text/NextText';
+import { ScoreText } from './text/ScoreText';
 import { UIContainer } from './components/UI';
+import { container } from 'tsyringe';
+import { Numbers } from './enums/Numbers';
+import Observables from './components/Observables';
 
 
 
 class Game {
     protected tamplate: Canvas | undefined;
     protected matrix: Matrix | undefined;
+    protected logo: Logo | undefined;
     protected uiContainer: UIContainer | undefined;
-    protected intervalId: ReturnType<typeof setInterval>;
+    protected engineGameIntervalId: ReturnType<typeof setInterval>;
     protected loadGameIntervalId: ReturnType<typeof setInterval>;
     protected element: any;
     protected buttonL: any;
     protected buttonR: any;
     protected buttonRotate: any;
-    protected nextCount: any;
+    protected nextElementViewport: any;
     protected nextText: any;
     protected scoreText: any;
-    protected score: Score;
-    protected _stepSpeed: number = 30;
+    protected score: Score | undefined;
+    protected _stepSpeed: number = 200;
     protected _timeForAssets: number = 100;
 
+
+
     constructor() {
-        this.score = new Score();
-        this.intervalId = setInterval(() => { });
+        this.engineGameIntervalId = setInterval(() => { });
         this.loadGameIntervalId = setInterval(this.afterTexturesInit.bind(this), this._timeForAssets);
+        Observables.UpdateScore.subscribe((v: number) => { this.score?.updateScore(v) });
+        Observables.ResetLinesCount.subscribe((v: number) => { this.matrix?.setLinesCount(v) });
+        Observables.FinishLinesReplaced.subscribe(this.afterLineAnime.bind(this));
     }
 
     protected afterTexturesInit(): void {
@@ -59,30 +66,55 @@ class Game {
     }
 
     private gameLoop(): void {
-        this.intervalId = setInterval(this.move.bind(this), this._stepSpeed);
+        this.engineGameIntervalId = setInterval(this.move.bind(this), this._stepSpeed);
 
     }
 
-    private move(): void {
-        
-        if (this.element.stoped) {
+    private down(): void {
+        this.showNextElement();
 
-            if (this.matrix?.isGameOver()) {
-                clearInterval(this.intervalId);
-                Log.log('GAME OVER!');
-                return;
-            }
-            
+        console.log(Observables.InAnime.value)
+
+        if (!this.element.stoped) {
+            this.element.down();
+            return;
+        }
+
+        if (this.matrix?.isGameOver()) {
+            clearInterval(this.engineGameIntervalId);
+            Log.log('GAME OVER!');
+            return;
+        }
+
+        if (this.matrix?.hasLines()) {
+            Observables.InAnime.next(true);
             this.matrix?.cleanLines();
-            this.updateScore();
+        }
+        if (!Observables.InAnime.value) {
             this.matrix?.drawElement();
-            this.showNextElement();
             this.element = this.matrix?.element;
             this.updateButtons();
         }
 
-        this.element.down();
     }
+
+    private move(): void {
+        if (Observables.InAnime.value) {
+            return;
+        }
+        this.down();
+    }
+
+    private afterLineAnime(): void {
+        if (Observables.FinishLinesReplaced.value) {
+            this.updateScore();
+            this.matrix?.drawElement();
+            this.element = this.matrix?.element;
+            this.updateButtons();
+            Observables.FinishLinesReplaced.next(false);
+        }
+    }
+
 
     private updateButtons(): void {
         this.buttonL.addElement(this.element);
@@ -92,34 +124,36 @@ class Game {
 
     private setResolves(): void {
         this.tamplate = container.resolve(Canvas);
+        this.logo = container.resolve(Logo);
         this.uiContainer = container.resolve(UIContainer);
         this.buttonL = container.resolve(ButtonLeft);
         this.buttonR = container.resolve(ButtonRight);
         this.buttonRotate = container.resolve(ButtonRotate);
         this.nextText = container.resolve(NextText);
+        this.score = container.resolve(Score);
         this.scoreText = container.resolve(ScoreText);
-        this.nextCount = container.resolve(Next);
+        this.nextElementViewport = container.resolve(Next);
     }
 
     private loadGameContainers(game: Canvas): void {
-        game.addContainer(new Logo());
+        game.addContainer(this.logo);
         this.uiContainer?.addChild(this.buttonL);
         this.uiContainer?.addChild(this.buttonR);
         this.uiContainer?.addChild(this.buttonRotate);
         game.addContainer(this.uiContainer);
         game.addContainer(this.nextText);
-        game.addContainer(this.nextCount);
+        game.addContainer(this.nextElementViewport);
         game.addContainer(this.scoreText);
-        game.addContainer(this.score.text);
+        game.addContainer(this.score?.text);
     }
 
     private showNextElement(): void {
-        (this.nextCount.children?.at(0) as any).texture = this.matrix?.getnextElementImage();
+        (this.nextElementViewport.children?.at(0) as any).texture = this.matrix?.getnextElementImage();
     }
 
     private updateScore(): void {
-        (this.matrix?.linesCount as number) > 0 ? this.score.updateScore(this.matrix?.linesCount as number) : this.score.updateScore(0);
-        this.matrix?.setLinesCount(0);
+        Observables.UpdateScore.next((this.matrix?.linesCount) as number);
+        Observables.ResetLinesCount.next(Numbers.ZERO);
     }
 
 

@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@pixi/sound": "^5.2.2",
+    "@reactivex/rxjs": "^6.6.7",
     "gsap": "^3.12.5",
     "howler": "^2.2.4",
     "pixi.js": "^7.3.3",

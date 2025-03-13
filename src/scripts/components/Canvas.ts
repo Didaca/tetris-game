@@ -1,6 +1,5 @@
 import * as PIXI from 'pixi.js';
 import { GlobalThis } from '../interfaces/IAppParams';
-import { Names } from '../enums/Names';
 import 'reflect-metadata';
 import { container, singleton } from 'tsyringe';
 import Background from './Background';
@@ -13,7 +12,7 @@ import Textures from '../textures/Texture';
 export class Canvas {
     public body: HTMLElement;
     public app: PIXI.Application<HTMLCanvasElement>;
-    public containerId: string = Names.CONTAINERid;
+    public containerId: string = 'game';
     private W: number = 469;
     private H: number = 800;
     private gameRatio: number = this.W / this.H;
@@ -36,7 +35,6 @@ export class Canvas {
         
         this.resolveDependency();
         this.initBackground();
-
     }
 
     public initBackground(): void {

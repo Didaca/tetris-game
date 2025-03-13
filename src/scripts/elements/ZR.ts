@@ -1,6 +1,6 @@
 import { BaseElement } from '../baseComponents/BaseElement';
-import Textures from '../../textures/Texture';
-import { Matrix } from '../Matrix';
+import Textures from '../textures/Texture';
+import { Matrix } from '../components/Matrix';
 
 
 export class ZR extends BaseElement {

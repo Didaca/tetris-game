@@ -1,31 +1,33 @@
 import * as PIXI from 'pixi.js';
-import gsap from 'gsap';
+// import gsap from 'gsap';
 import 'reflect-metadata';
 import { container, singleton } from 'tsyringe';
 import Textures from '../textures/Texture';
 import { Canvas } from './Canvas';
-import { Cube } from './elements/Cube';
+import { Cube } from '../elements/Cube';
 import { Container } from './Container';
-import { BaseElement } from './baseComponents/BaseElement';
+import { BaseElement } from '../baseComponents/BaseElement';
 import { Numbers } from '../enums/Numbers';
-import { StickR } from './elements/StickR';
-import { ZR } from './elements/ZR';
-import { T } from './elements/T';
-import { Piller } from './elements/Piller';
+import { StickR } from '../elements/StickR';
+import { ZR } from '../elements/ZR';
+import { T } from '../elements/T';
+import { Piller } from '../elements/Piller';
+import { IMatrix } from '../interfaces/IMatrix';
+import Observables from './Observables';
 
 
 
 @singleton()
-export class Matrix extends PIXI.Container {
-    readonly matrixRow: number = 30;
-    readonly matrixCol: number = 17;
-    readonly firstVisiblyRow: number = 2;
-    readonly spriteSize: number = 20;
+export class Matrix extends PIXI.Container implements IMatrix {
+    public readonly matrixRow: number = 30;
+    public readonly matrixCol: number = 17;
+    public readonly firstVisiblyRow: number = 2;
+    public readonly spriteSize: number = 20;
+    public readonly name: string = 'Matrix';
+    public arrayElements: Array<BaseElement>;
     protected _zIndex: number = 20;
     protected _baseElementsCount: number = 10;
     protected _linesCount: number = 0;
-    readonly name: string = 'Matrix';
-    public arrayElements: Array<BaseElement>;
     protected baseTexture: any;
     private containerBounceX: number;
     private containerBounceY: number;
@@ -38,16 +40,16 @@ export class Matrix extends PIXI.Container {
         this.baseTexture = Textures.getTexture('BASE');
         this.containerBounceX = Math.round((this.canvas.width - (this.spriteSize * this.matrixCol)) / 2);
         this.containerBounceY = Math.round((this.canvas.height - (this.spriteSize * this.matrixRow)) / 3);
+        Observables.FinishLineAnime.subscribe(this.replaceRowContainers.bind(this));
         this.init();
-
+        
     }
-
+    
     private init(): void {
         this.loadRowContainers();
         this.canvas.addContainer(this);
         this.drawElement();
         this.generateElement();
-        // this.getFrames();
     }
 
     // loading rowContainer with sprites
@@ -112,6 +114,10 @@ export class Matrix extends PIXI.Container {
         this._linesCount = a;
     }
 
+    public hasLines(): boolean {
+        return this.getlines().length !== 0;
+    }
+
     public isGameOver(): boolean {
         const result = (this.children[this.firstVisiblyRow] as any).children
             .filter((sprite: any) => sprite.texture !== this.baseTexture);
@@ -130,20 +136,34 @@ export class Matrix extends PIXI.Container {
     //         .to(sprite, { alpha: 1 });
     // }
 
+    private replaceRowContainers(): void {
+        if (Observables.FinishLineAnime.value) {
+            let r = Observables.LineToAnime.value;
+            while (r > 0) {
+                const sprites = (this.children[r - Numbers.ONE] as any)?.children.filter((sprite: PIXI.Sprite) => sprite.texture);
+                (this.children[r] as any)?.children.map((sprite: PIXI.Sprite) => sprite.texture = sprites.shift().texture);
+
+                r -= Numbers.ONE;
+            }
+            Observables.FinishLineAnime.next(false);
+        }
+    }
+
+    private updateRows(lines: number[]): void {
+        for (let i = 0; i < lines.length; i++) {
+            let r: any = lines[0];
+            this.lineAnime(r);
+            Observables.LineToAnime.next(r);
+        }
+    }
+
     public cleanLines(): void {
         const lines: number[] = this.getlines();
         if (lines.length > 0) {
             this.setLinesCount(lines.length);
-            for (let i = 0; i < lines.length; i++) {
-                let r: any = lines[0];
-                while (r > 0) {
-                    const sprites = (this.children[r - Numbers.ONE] as any)?.children.filter((sprite: PIXI.Sprite) => sprite.texture);
-                    (this.children[r] as any)?.children.map((sprite: PIXI.Sprite) => sprite.texture = sprites.shift().texture);
-
-                    r -= Numbers.ONE;
-                }
-            }
+            this.updateRows(lines);
         }
+        Observables.FinishLinesReplaced.next(true);
     }
 
     private getlines(): number[] {
@@ -223,25 +243,27 @@ export class Matrix extends PIXI.Container {
         this.tetromino.draw();
     }
 
-    // private async getFrames(r: number): Promise<void> {
-    //     // const container: [] = [];
+    private lineAnime(r: number): void {
 
-    //     const lineAnime = new PIXI.AnimatedSprite(Textures.getAnimation('LINE').line)
-    //     // console.log(lineAnime)
+        const lineAnime = new PIXI.AnimatedSprite(Textures.getAnimation('LINE'));
 
-    //     lineAnime.width = 340
-    //     lineAnime.height = 20
-    //     lineAnime.x = 67
-    //     lineAnime.y = r * 20 + 67
-    //     lineAnime.play()
+        lineAnime.width = 340;
+        lineAnime.height = 20;
+        lineAnime.x = 67;
+        lineAnime.y = r * 20 + 67;
+        lineAnime.animationSpeed = 0.5;
+        lineAnime.play();
+        this.addChild(lineAnime);
 
-    //     this.addChild(lineAnime)
-    //     setTimeout(() => 
-    //         [lineAnime.stop(),
-    //             lineAnime.destroy()
-    //         ]
-    //     , 2000)
-
-    // }
+        const timeOut = setTimeout(() =>
+            [
+                lineAnime.stop(),
+                lineAnime.destroy(),
+                Observables.FinishLineAnime.next(true),
+                clearTimeout(timeOut),
+            ]
+            , 2000);
+        
+    }
 
 }
