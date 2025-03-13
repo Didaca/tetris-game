@@ -25,7 +25,6 @@ class Game {
     protected uiContainer: UIContainer | undefined;
     protected engineGameIntervalId: ReturnType<typeof setInterval>;
     protected loadGameIntervalId: ReturnType<typeof setInterval>;
-    protected element: any;
     protected buttonL: any;
     protected buttonR: any;
     protected buttonRotate: any;
@@ -43,7 +42,7 @@ class Game {
         this.loadGameIntervalId = setInterval(this.afterTexturesInit.bind(this), this._timeForAssets);
         Observables.UpdateScore.subscribe((v: number) => { this.score?.updateScore(v) });
         Observables.ResetLinesCount.subscribe((v: number) => { this.matrix?.setLinesCount(v) });
-        Observables.FinishLinesReplaced.subscribe(this.afterLineAnime.bind(this));
+        Observables.Pause.subscribe((y) => {this.setPauseGame(y)});
     }
 
     protected afterTexturesInit(): void {
@@ -58,7 +57,6 @@ class Game {
         if (this.tamplate) {
             this.loadGameContainers(this.tamplate);
             this.matrix = new Matrix(this.tamplate);
-            this.element = this.matrix.element;
             this.showNextElement();
             this.updateButtons();
             this.gameLoop();
@@ -70,13 +68,19 @@ class Game {
 
     }
 
+    private setPauseGame(y: boolean): void {
+        y ? clearInterval(this.engineGameIntervalId) : this.engineGameIntervalId = setInterval(this.move.bind(this), this._stepSpeed);
+    }
+
+    private move(): void {
+        this.down();
+    }
+
     private down(): void {
         this.showNextElement();
 
-        console.log(Observables.InAnime.value)
-
-        if (!this.element.stoped) {
-            this.element.down();
+        if (!this.matrix?.element.stoped) {
+            this.matrix?.element.down();
             return;
         }
 
@@ -87,39 +91,26 @@ class Game {
         }
 
         if (this.matrix?.hasLines()) {
-            Observables.InAnime.next(true);
+            Observables.Pause.next(true);
             this.matrix?.cleanLines();
-        }
-        if (!Observables.InAnime.value) {
+            const cleanPause = setTimeout(() => {
+                [
+                    this.updateScore(),
+                    Observables.Pause.next(false),
+                    clearTimeout(cleanPause),
+                ]
+            }, Observables.AnimationTime.value)
+        } else {
             this.matrix?.drawElement();
-            this.element = this.matrix?.element;
             this.updateButtons();
         }
 
     }
-
-    private move(): void {
-        if (Observables.InAnime.value) {
-            return;
-        }
-        this.down();
-    }
-
-    private afterLineAnime(): void {
-        if (Observables.FinishLinesReplaced.value) {
-            this.updateScore();
-            this.matrix?.drawElement();
-            this.element = this.matrix?.element;
-            this.updateButtons();
-            Observables.FinishLinesReplaced.next(false);
-        }
-    }
-
 
     private updateButtons(): void {
-        this.buttonL.addElement(this.element);
-        this.buttonR.addElement(this.element);
-        this.buttonRotate.addElement(this.element);
+        this.buttonL.addElement(this.matrix?.element);
+        this.buttonR.addElement(this.matrix?.element);
+        this.buttonRotate.addElement(this.matrix?.element);
     }
 
     private setResolves(): void {

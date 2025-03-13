@@ -40,7 +40,7 @@ export class Matrix extends PIXI.Container implements IMatrix {
         this.baseTexture = Textures.getTexture('BASE');
         this.containerBounceX = Math.round((this.canvas.width - (this.spriteSize * this.matrixCol)) / 2);
         this.containerBounceY = Math.round((this.canvas.height - (this.spriteSize * this.matrixRow)) / 3);
-        Observables.FinishLineAnime.subscribe(this.replaceRowContainers.bind(this));
+        Observables.FinishLineAnime.subscribe(this.replaceRows.bind(this));
         this.init();
         
     }
@@ -136,7 +136,7 @@ export class Matrix extends PIXI.Container implements IMatrix {
     //         .to(sprite, { alpha: 1 });
     // }
 
-    private replaceRowContainers(): void {
+    private replaceRows(): void {
         if (Observables.FinishLineAnime.value) {
             let r = Observables.LineToAnime.value;
             while (r > 0) {
@@ -149,7 +149,7 @@ export class Matrix extends PIXI.Container implements IMatrix {
         }
     }
 
-    private updateRows(lines: number[]): void {
+    private goToAnimeLines(lines: number[]): void {
         for (let i = 0; i < lines.length; i++) {
             let r: any = lines[0];
             this.lineAnime(r);
@@ -161,9 +161,8 @@ export class Matrix extends PIXI.Container implements IMatrix {
         const lines: number[] = this.getlines();
         if (lines.length > 0) {
             this.setLinesCount(lines.length);
-            this.updateRows(lines);
+            this.goToAnimeLines(lines);
         }
-        Observables.FinishLinesReplaced.next(true);
     }
 
     private getlines(): number[] {
@@ -262,7 +261,7 @@ export class Matrix extends PIXI.Container implements IMatrix {
                 Observables.FinishLineAnime.next(true),
                 clearTimeout(timeOut),
             ]
-            , 2000);
+            , Observables.AnimationTime.value);
         
     }
 
