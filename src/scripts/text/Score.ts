@@ -4,7 +4,7 @@ import { injectable } from 'tsyringe';
 
 @injectable()
 export class Score {
-    readonly x: number = 440;
+    readonly x: number = 431;
     readonly y: number = 207;
     private _score: number = 0;
     private _text: PIXI.Text;
@@ -18,19 +18,13 @@ export class Score {
                 fill: 0xfcebb6,
             }))
             this._text.name = 'Score';
-        this._text.anchor.set(1, 0);
+        this._text.anchor.set(0.5, 0);
         this._text.x = this.x;
         this._text.y = this.y;
     }
 
     public updateScore(lines: number) {
         this._score += lines;
-        if (this._score > 9) {
-            this._text.x = this.x + 12;
-        }
-        if (this._score > 99) {
-            this._text.x = this.x + 16;
-        }
         this._text.text = this._score;
     }
 

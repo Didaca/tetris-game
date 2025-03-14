@@ -42,9 +42,9 @@ export class Matrix extends PIXI.Container implements IMatrix {
         this.containerBounceY = Math.round((this.canvas.height - (this.spriteSize * this.matrixRow)) / 3);
         Observables.FinishLineAnime.subscribe(this.replaceRows.bind(this));
         this.init();
-        
+
     }
-    
+
     private init(): void {
         this.loadRowContainers();
         this.canvas.addContainer(this);
@@ -145,15 +145,19 @@ export class Matrix extends PIXI.Container implements IMatrix {
 
                 r -= Numbers.ONE;
             }
-            Observables.FinishLineAnime.next(false);
         }
     }
 
     private goToAnimeLines(lines: number[]): void {
         for (let i = 0; i < lines.length; i++) {
             let r: any = lines[0];
-            this.lineAnime(r);
             Observables.LineToAnime.next(r);
+            const timeOut = setTimeout(() => {
+                [
+                    this.lineAnime(r),
+                    clearTimeout(timeOut)
+                ]
+            }, Observables.AnimationTime.value * i)
         }
     }
 
@@ -261,8 +265,8 @@ export class Matrix extends PIXI.Container implements IMatrix {
                 Observables.FinishLineAnime.next(true),
                 clearTimeout(timeOut),
             ]
-            , Observables.AnimationTime.value);
-        
+            , Observables.AnimationTime.value
+        );
     }
 
 }

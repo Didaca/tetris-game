@@ -84,24 +84,24 @@ class Game {
             return;
         }
 
-        if (this.matrix?.isGameOver()) {
+        if (this.matrix.isGameOver()) {
             clearInterval(this.engineGameIntervalId);
             Log.log('GAME OVER!');
             return;
         }
 
-        if (this.matrix?.hasLines()) {
+        if (this.matrix.hasLines()) {
             Observables.Pause.next(true);
-            this.matrix?.cleanLines();
+            this.matrix.cleanLines();
             const cleanPause = setTimeout(() => {
                 [
                     this.updateScore(),
                     Observables.Pause.next(false),
                     clearTimeout(cleanPause),
                 ]
-            }, Observables.AnimationTime.value)
+            }, Observables.AnimationTime.value * this.matrix.linesCount);
         } else {
-            this.matrix?.drawElement();
+            this.matrix.drawElement();
             this.updateButtons();
         }
 
