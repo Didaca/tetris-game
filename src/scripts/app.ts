@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import { Canvas } from './components/Canvas';
 import { Matrix } from './components/Matrix';
-import Textures from './textures/Texture';
 import Log from './components/Log';
 import { Logo } from './components/Logo';
 import { ButtonLeft } from './components/ButtonLeft';
@@ -24,7 +23,6 @@ class Game {
     protected logo: Logo | undefined;
     protected uiContainer: UIContainer | undefined;
     protected engineGameIntervalId: ReturnType<typeof setInterval>;
-    protected loadGameIntervalId: ReturnType<typeof setInterval>;
     protected buttonL: any;
     protected buttonR: any;
     protected buttonRotate: any;
@@ -39,16 +37,15 @@ class Game {
 
     constructor() {
         this.engineGameIntervalId = setInterval(() => { });
-        this.loadGameIntervalId = setInterval(this.afterTexturesInit.bind(this), this._timeForAssets);
+        Observables.LoadAssets.subscribe((b: boolean) => { this.afterTexturesInit(b) });
         Observables.UpdateScore.subscribe((v: number) => { this.score?.updateScore(v) });
         Observables.ResetLinesCount.subscribe((v: number) => { this.matrix?.setLinesCount(v) });
         Observables.Pause.subscribe((y) => {this.setPauseGame(y)});
     }
 
-    protected afterTexturesInit(): void {
-        if (Textures.complited) {
+    protected afterTexturesInit(gameLoaded: boolean): void {
+        if (gameLoaded) {
             this.init();
-            clearInterval(this.loadGameIntervalId);
         }
     }
 

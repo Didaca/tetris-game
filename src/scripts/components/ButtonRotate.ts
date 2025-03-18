@@ -1,14 +1,14 @@
 import * as PIXI from 'pixi.js';
-import Texture from '../textures/Texture';
 import { BaseElement } from '../baseComponents/BaseElement';
-import { singleton } from 'tsyringe';
+import { container, singleton } from 'tsyringe';
+import { Rotate } from '../text/TextRotate';
 
 
 @singleton()
 export class ButtonRotate extends PIXI.Container {
     public name: string = 'RotateButton';
     protected _zIndex: number = 30;
-    private positionX: number = 235;
+    private positionX: number = 184;
     private positionY: number = 700;
     private buttonWidth: number = 100;
     private buttonHeight: number = 60;
@@ -20,16 +20,16 @@ export class ButtonRotate extends PIXI.Container {
     }
 
     private init(): void {
-        const button: PIXI.Sprite = new PIXI.Sprite(Texture.getTexture('ROTATE'));
-        button.anchor.set(0.5, 0);
-        button.width = this.buttonWidth;
-        button.height = this.buttonHeight;
-        button.x = this.positionX;
-        button.y = this.positionY;
+        const button: PIXI.Graphics = new PIXI.Graphics();
+        button.beginFill();
+        button.drawRect(this.positionX, this.positionY, this.buttonWidth, this.buttonHeight);
+        button.alpha = 0;
+        button.endFill();
 
         button.eventMode = 'static';
+        button.on('touchstart', () => { this.rotate() });
 
-        button.on('touchstart', () => {this.rotate()});
+        this.addChild(container.resolve(Rotate).text);
         this.addChild(button);
     }
 
@@ -38,6 +38,6 @@ export class ButtonRotate extends PIXI.Container {
     }
 
     rotate(): void {
-    this.element.rotate();
+        this.element.rotate();
     }
 }

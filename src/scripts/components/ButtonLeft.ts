@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
-import Texture from '../textures/Texture';
 import { BaseElement } from '../baseComponents/BaseElement';
-import { singleton } from 'tsyringe';
+import { container, singleton } from 'tsyringe';
+import { Left } from '../text/TextLeft';
 
 
 @singleton()
@@ -20,15 +20,16 @@ export class ButtonLeft extends PIXI.Container {
     }
 
     private init(): void {
-        const button: PIXI.Sprite = new PIXI.Sprite(Texture.getTexture('B_LEFT'));
-        button.width = this.buttonWidth;
-        button.height = this.buttonHeight;
-        button.x = this.positionX;
-        button.y = this.positionY;
-
+        const button: PIXI.Graphics = new PIXI.Graphics();
+        button.beginFill();
+        button.drawRect(this.positionX, this.positionY, this.buttonWidth, this.buttonHeight);
+        button.alpha = 0;
+        button.endFill();
+        
         button.eventMode = 'static';
-
         button.on('touchstart', () => { this.toLeft() });
+
+        this.addChild(container.resolve(Left).text);
         this.addChild(button);
     }
 

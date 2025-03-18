@@ -3,14 +3,31 @@
 	src: url('../resources/font/EnergySpike-d9Bx6.ttf') format('truetype');
 }
 
+@font-face {
+	font-family: Dotrice;
+	src: url('../resources/font/Dotrice-Regular.otf') format('truetype');
+}
+
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 }
 
-#fake {
+#fake_e {
 	font-family: 'EnergySpike';
+	position: absolute;
+	top: -500px;
+	background-color: transparent;
+	color: transparent;
+}
+
+#fake_d {
+	font-family: 'Dotrice';
+	position: absolute;
+	top: -500px;
+	background-color: transparent;
+	color: transparent;
 }
 
 #game {

@@ -1,9 +1,9 @@
 import * as PIXI from 'pixi.js';
 import Log from '../components/Log';
+import Observables from '../components/Observables';
 
 
 class Textures {
-    protected _complited: boolean = false;
     protected logoTexture: any;
     protected baseTexture: any;
     protected backgroundTexture: any;
@@ -18,9 +18,6 @@ class Textures {
     protected tImage: any;
     protected zRTexture: any;
     protected zRImage: any;
-    protected buttonLeft: any;
-    protected buttonRight: any;
-    protected buttonRotate: any;
     protected lineAnimation: any;
     protected nextElementText: any;
     protected scoreElementText: any;
@@ -47,22 +44,15 @@ class Textures {
         this.tImage = await PIXI.Assets.load('/resources/images/tImage.png');
         this.zRTexture = await PIXI.Assets.load('/resources/images/zR.png');
         this.zRImage = await PIXI.Assets.load('/resources/images/zRImage.png');
-        this.buttonLeft = await PIXI.Assets.load('/resources/images/left.png');
-        this.buttonRight = await PIXI.Assets.load('/resources/images/right.png');
-        this.buttonRotate = await PIXI.Assets.load('/resources/images/rotate.png');
         this.nextElementText = await PIXI.Assets.load('/resources/images/next.png');
         this.scoreElementText = await PIXI.Assets.load('/resources/images/score.png');
         this.lineAnimation = await PIXI.Assets.load('/resources/animations/line_anime.json');
 
 
-        if (this.scoreElementText) {
-            this._complited = true;
+        if (this.lineAnimation) {
+            Observables.LoadAssets.next(true);
             Log.log('ASSETS LOADED!');
         }
-    }
-
-    get complited(): any {
-        return this._complited;
     }
 
     public getAnimation(name: string): any {
@@ -109,12 +99,6 @@ class Textures {
                 return this.zRTexture;
             case 'Z_R_IMAGE':
                 return this.zRImage;
-            case 'B_LEFT':
-                return this.buttonLeft;
-            case 'B_RIGHT':
-                return this.buttonRight;
-            case 'ROTATE':
-                return this.buttonRotate;
             default:
                 break;
         }
