@@ -12,10 +12,6 @@ export interface IMatrix {
     
     get baseT(): any;
     
-    get linesCount(): number;
-
-    setLinesCount(a: number): void;
-    
     isGameOver(): boolean;
 
     cleanLines(): void;

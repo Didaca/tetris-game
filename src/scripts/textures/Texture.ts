@@ -18,7 +18,6 @@ class Textures {
     protected tImage: any;
     protected zRTexture: any;
     protected zRImage: any;
-    protected lineAnimation: any;
     protected nextElementText: any;
     protected scoreElementText: any;
 
@@ -46,21 +45,11 @@ class Textures {
         this.zRImage = await PIXI.Assets.load('/resources/images/zRImage.png');
         this.nextElementText = await PIXI.Assets.load('/resources/images/next.png');
         this.scoreElementText = await PIXI.Assets.load('/resources/images/score.png');
-        this.lineAnimation = await PIXI.Assets.load('/resources/animations/line_anime.json');
 
 
-        if (this.lineAnimation) {
+        if (this.scoreElementText) {
             Observables.LoadAssets.next(true);
             Log.log('ASSETS LOADED!');
-        }
-    }
-
-    public getAnimation(name: string): any {
-        switch (name) {
-            case 'LINE':
-                return this.lineAnimation.animations.line;
-            default:
-                break;
         }
     }
 

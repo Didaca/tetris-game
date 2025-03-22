@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-// import gsap from 'gsap';
+import gsap from 'gsap';
 import 'reflect-metadata';
 import { container, singleton } from 'tsyringe';
 import Textures from '../textures/Texture';
@@ -40,7 +40,6 @@ export class Matrix extends PIXI.Container implements IMatrix {
         this.baseTexture = Textures.getTexture('BASE');
         this.containerBounceX = Math.round((this.canvas.width - (this.spriteSize * this.matrixCol)) / 2);
         this.containerBounceY = Math.round((this.canvas.height - (this.spriteSize * this.matrixRow)) / 3);
-        Observables.FinishLineAnime.subscribe(this.replaceRows.bind(this));
         this.init();
 
     }
@@ -106,14 +105,6 @@ export class Matrix extends PIXI.Container implements IMatrix {
         return this.baseTexture;
     }
 
-    public get linesCount(): number {
-        return this._linesCount;
-    }
-
-    public setLinesCount(a: number): void {
-        this._linesCount = a;
-    }
-
     public hasLines(): boolean {
         return this.getlines().length !== 0;
     }
@@ -125,47 +116,47 @@ export class Matrix extends PIXI.Container implements IMatrix {
     }
 
     private isLine(row: number): boolean {
-        const result = (this.children[row] as any).children
+        const result = (this.children[row] as PIXI.Container).children
             .filter((sprite: any) => sprite.texture !== this.baseTexture);
         return (result.length === this.matrixCol);
     }
 
-    // public async anime(sprite: any): Promise<void> {
-    //     await gsap.timeline({ repeat: 2, yoyo: true })
-    //         .to(sprite, { alpha: -0.01 })
-    //         .to(sprite, { alpha: 1 });
-    // }
-
     private replaceRows(): void {
-        if (Observables.FinishLineAnime.value) {
-            let r = Observables.LineToAnime.value;
-            while (r > 0) {
-                const sprites = (this.children[r - Numbers.ONE] as any)?.children.filter((sprite: PIXI.Sprite) => sprite.texture);
-                (this.children[r] as any)?.children.map((sprite: PIXI.Sprite) => sprite.texture = sprites.shift().texture);
+        let r = Observables.LineToAnime.value;
+        while (r > 0) {
+            const sprites = (this.children[r - Numbers.ONE] as any).children.filter((sprite: PIXI.Sprite) => sprite.texture);
+            (this.children[r] as any).children.map((sprite: PIXI.Sprite) => sprite.texture = sprites.shift().texture);
 
-                r -= Numbers.ONE;
-            }
+            r -= Numbers.ONE;
         }
+
+        Observables.LinesInArray.next(Observables.LinesInArray.value.slice(1));
+        this.cleanLines();
     }
 
-    private goToAnimeLines(lines: number[]): void {
-        for (let i = 0; i < lines.length; i++) {
-            let r: any = lines[0];
-            Observables.LineToAnime.next(r);
-            const timeOut = setTimeout(() => {
-                [
-                    this.lineAnime(r),
-                    clearTimeout(timeOut)
-                ]
-            }, Observables.AnimationTime.value * i)
-        }
+    private async scaleLineAnime(line: Array<PIXI.Sprite>[]): Promise<void> {
+        await gsap.timeline({
+            repeat: 1,
+            onRepeat: () => console.log('repeat'),
+            onComplete: () => { this.replaceRows() }
+        })
+            .from(line, {
+                y: 87,
+                stagger: 0.1,
+                ease: 'back',
+            });
     }
 
-    public cleanLines(): void {
-        const lines: number[] = this.getlines();
-        if (lines.length > 0) {
-            this.setLinesCount(lines.length);
-            this.goToAnimeLines(lines);
+    private async goToAnimeLines(): Promise<void> {
+        let r: any = Observables.LineToAnime.value;
+        await this.scaleLineAnime((this.children[r] as PIXI.Container).children as any);
+    }
+
+    public async cleanLines(): Promise<void> {
+        if (Observables.LinesInArray.value.length > 0) {
+            await this.goToAnimeLines();
+        } else {
+            Observables.LoadUpdateScore.next(true);
         }
     }
 
@@ -178,6 +169,13 @@ export class Matrix extends PIXI.Container implements IMatrix {
                 lines.push(i);
             }
         }
+
+        if (lines.length > 0) {
+            Observables.LinesCount.next(lines.length);
+            Observables.LinesInArray.next(lines);
+            Observables.LineToAnime.next(Observables.LinesInArray.value[0]);
+        }
+
         return lines;
     }
 
@@ -246,27 +244,30 @@ export class Matrix extends PIXI.Container implements IMatrix {
         this.tetromino.draw();
     }
 
-    private lineAnime(r: number): void {
+    /*
+    * pixi animation
+    */
+    // private lineAnime(r: number): void {
 
-        const lineAnime = new PIXI.AnimatedSprite(Textures.getAnimation('LINE'));
+    //     const lineAnime = new PIXI.AnimatedSprite(Textures.getAnimation('LINE'));
 
-        lineAnime.width = 340;
-        lineAnime.height = 20;
-        lineAnime.x = 67;
-        lineAnime.y = r * 20 + 67;
-        lineAnime.animationSpeed = 0.5;
-        lineAnime.play();
-        this.addChild(lineAnime);
+    //     lineAnime.width = 340;
+    //     lineAnime.height = 20;
+    //     lineAnime.x = 67;
+    //     lineAnime.y = r * 20 + 67;
+    //     lineAnime.animationSpeed = 0.5;
+    //     lineAnime.play();
+    //     this.addChild(lineAnime);
 
-        const timeOut = setTimeout(() =>
-            [
-                lineAnime.stop(),
-                lineAnime.destroy(),
-                Observables.FinishLineAnime.next(true),
-                clearTimeout(timeOut),
-            ]
-            , Observables.AnimationTime.value
-        );
-    }
+    //     const timeOut = setTimeout(() =>
+    //         [
+    //             lineAnime.stop(),
+    //             lineAnime.destroy(),
+    //             Observables.FinishLineAnime.next(true),
+    //             clearTimeout(timeOut),
+    //         ]
+    //         , Observables.AnimationTime.value
+    //     );
+    // }
 
 }

@@ -30,16 +30,15 @@ class Game {
     protected nextText: any;
     protected scoreText: any;
     protected score: Score | undefined;
-    protected _stepSpeed: number = 200;
-    protected _timeForAssets: number = 100;
+    protected _stepSpeed: number = 150;
 
 
 
     constructor() {
         this.engineGameIntervalId = setInterval(() => { });
         Observables.LoadAssets.subscribe((b: boolean) => { this.afterTexturesInit(b) });
+        Observables.LoadUpdateScore.subscribe(() => {this.updateScore()});
         Observables.UpdateScore.subscribe((v: number) => { this.score?.updateScore(v) });
-        Observables.ResetLinesCount.subscribe((v: number) => { this.matrix?.setLinesCount(v) });
         Observables.Pause.subscribe((y) => {this.setPauseGame(y)});
     }
 
@@ -90,13 +89,13 @@ class Game {
         if (this.matrix.hasLines()) {
             Observables.Pause.next(true);
             this.matrix.cleanLines();
-            const cleanPause = setTimeout(() => {
-                [
-                    this.updateScore(),
-                    Observables.Pause.next(false),
-                    clearTimeout(cleanPause),
-                ]
-            }, Observables.AnimationTime.value * this.matrix.linesCount);
+            // const cleanPause = setTimeout(() => {
+            //     [
+            //         this.updateScore(),
+            //         Observables.Pause.next(false),
+            //         clearTimeout(cleanPause),
+            //     ]
+            // }, Observables.AnimationTime.value * this.matrix.linesCount);
         } else {
             this.matrix.drawElement();
             this.updateButtons();
@@ -140,8 +139,9 @@ class Game {
     }
 
     private updateScore(): void {
-        Observables.UpdateScore.next((this.matrix?.linesCount) as number);
-        Observables.ResetLinesCount.next(Numbers.ZERO);
+        Observables.UpdateScore.next((Observables.LinesCount.value) as number);
+        Observables.LinesCount.next(Numbers.ZERO);
+        Observables.Pause.next(false);
     }
 
 
