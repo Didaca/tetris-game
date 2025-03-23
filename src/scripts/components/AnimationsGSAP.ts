@@ -14,7 +14,7 @@ export default class AnimationsGSAP {
                 stagger: {
                     amount: 2,
                     from: 'random',
-                    ease: 'power1.easeInOut',
+                    ease: 'power1.InOut',
                 },
             })
     }
@@ -27,7 +27,7 @@ export default class AnimationsGSAP {
                 x: 800,
                 stagger: {
                     amount: 2,
-                    ease: 'power1.easeInOut'
+                    ease: 'power1.InOut'
                 }
             })
     }
@@ -40,7 +40,7 @@ export default class AnimationsGSAP {
                 y: 667,
                 stagger: {
                     amount: 2,
-                    ease: 'power1.easeInOut'
+                    ease: 'power1.InOut'
                 }
             })
     }
