@@ -1,10 +1,12 @@
 @font-face {
 	font-family: EnergySpike;
+	font-weight: 200;
 	src: url('../resources/font/EnergySpike-d9Bx6.ttf') format('truetype');
 }
 
 @font-face {
 	font-family: Dotrice;
+	font-weight: 200;
 	src: url('../resources/font/Dotrice-Regular.otf') format('truetype');
 }
 

@@ -13,9 +13,10 @@ export class Score {
         this._text = new PIXI.Text(`${this._score}`,
             new PIXI.TextStyle({
                 fontFamily: 'EnergySpike',
-                fontSize: 24,
+                fontSize: 32,
                 letterSpacing: 1.5,
                 fill: 0xfcebb6,
+                trim: true,
             }))
             this._text.name = 'Score';
         this._text.anchor.set(0.5, 0);

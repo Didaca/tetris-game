@@ -12,7 +12,7 @@ export class Left {
         this._text = new PIXI.Text("LEFT",
             new PIXI.TextStyle({
                 fontFamily: 'Dotrice',
-                fontSize: 38,
+                fontSize: 42,
                 trim: true,
                 fill: 0xFCEBB6,
             }))

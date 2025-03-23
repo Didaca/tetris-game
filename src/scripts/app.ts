@@ -30,7 +30,7 @@ class Game {
     protected nextText: any;
     protected scoreText: any;
     protected score: Score | undefined;
-    protected _stepSpeed: number = 150;
+    protected _stepSpeed: number = 200;
 
 
 

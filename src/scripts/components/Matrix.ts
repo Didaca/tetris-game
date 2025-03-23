@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import gsap from 'gsap';
 import 'reflect-metadata';
 import { container, singleton } from 'tsyringe';
 import Textures from '../textures/Texture';
@@ -14,6 +13,7 @@ import { T } from '../elements/T';
 import { Piller } from '../elements/Piller';
 import { IMatrix } from '../interfaces/IMatrix';
 import Observables from './Observables';
+import AnimationsGSAP from './AnimationsGSAP';
 
 
 
@@ -121,7 +121,7 @@ export class Matrix extends PIXI.Container implements IMatrix {
         return (result.length === this.matrixCol);
     }
 
-    private replaceRows(): void {
+    public replaceRows(): void {
         let r = Observables.LineToAnime.value;
         while (r > 0) {
             const sprites = (this.children[r - Numbers.ONE] as any).children.filter((sprite: PIXI.Sprite) => sprite.texture);
@@ -134,22 +134,17 @@ export class Matrix extends PIXI.Container implements IMatrix {
         this.cleanLines();
     }
 
-    private async scaleLineAnime(line: Array<PIXI.Sprite>[]): Promise<void> {
-        await gsap.timeline({
-            repeat: 1,
-            onRepeat: () => console.log('repeat'),
-            onComplete: () => { this.replaceRows() }
-        })
-            .from(line, {
-                y: 87,
-                stagger: 0.1,
-                ease: 'back',
-            });
-    }
-
     private async goToAnimeLines(): Promise<void> {
         let r: any = Observables.LineToAnime.value;
-        await this.scaleLineAnime((this.children[r] as PIXI.Container).children as any);
+        if (r === 29) {
+            await AnimationsGSAP.bottomLineAnime((this.children[r] as PIXI.Container).children as any, this);
+            return;
+        }
+        if (r % 2 === 0) {
+            await AnimationsGSAP.evenLineAnime((this.children[r] as PIXI.Container).children as any, this);
+        } else {
+            await AnimationsGSAP.oddLineAnime((this.children[r] as PIXI.Container).children as any, this);
+        }
     }
 
     public async cleanLines(): Promise<void> {
@@ -162,7 +157,7 @@ export class Matrix extends PIXI.Container implements IMatrix {
 
     private getlines(): number[] {
         let lines: number[] = [];
-        const row: number = this.getRowToLine();
+        const row: number = this.getRowOfLine();
 
         for (let i = row; i > row - 6; i -= 1) {
             if (this.isLine(i)) {
@@ -179,7 +174,7 @@ export class Matrix extends PIXI.Container implements IMatrix {
         return lines;
     }
 
-    private getRowToLine(): number {
+    private getRowOfLine(): number {
         let row: number = this.tetromino.coordinates[0];
 
         if (row === this.matrixRow - 1) {
