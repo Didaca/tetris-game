@@ -1,19 +1,69 @@
 @font-face {
-	font-family: EnergySpike;
+	font-family: 'EnergySpike';
+	font-style: normal;
 	font-weight: 200;
 	src: url('../resources/font/EnergySpike-d9Bx6.ttf') format('truetype');
 }
 
 @font-face {
-	font-family: Dotrice;
+	font-family: 'Dotrice';
+	font-style: normal;
 	font-weight: 200;
 	src: url('../resources/font/Dotrice-Regular.otf') format('truetype');
+}
+
+:root {
+	--background: #0b0be7;
+	--tetris-txt: #FCEBB6;
+	--load-txt: white;
 }
 
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+}
+
+body {
+	position: relative;
+}
+
+#intro-game {
+	position: absolute;
+	z-index: 100;
+	top: 0px;
+	left: 0px;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	background: radial-gradient(circle, rgba(11, 11, 231, 1) 0%, rgba(0, 82, 255, 1) 100%);
+}
+
+.intro-logo {
+	width: 270px;
+	height: auto;
+	position: absolute;
+	z-index: 100;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	bottom: 330px;
+}
+
+#loading-txt {
+	width: 150px;
+	height: auto;
+	position: absolute;
+	z-index: 100;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	bottom: 200px;
+	font-family: 'Dotrice';
+	font-size: 20px;
+	letter-spacing: 1.2px;
+	color: var(--load-txt);
+
 }
 
 #fake_e {

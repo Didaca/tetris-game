@@ -6,6 +6,7 @@ import { injectable } from 'tsyringe';
 export class Score {
     readonly x: number = 431;
     readonly y: number = 207;
+    private _zIndex: number = 20;
     private _score: number = 0;
     private _text: PIXI.Text;
 
@@ -22,6 +23,7 @@ export class Score {
         this._text.anchor.set(0.5, 0);
         this._text.x = this.x;
         this._text.y = this.y;
+        this._text.zIndex = this._zIndex;
     }
 
     public updateScore(lines: number) {

@@ -8,7 +8,7 @@ class Log {
 
     public log(message: string): void {
         const time = this.time.toLocaleTimeString('bg-BG').split(' ')[0];
-        window.console.log("%c ["+ time + "] " + message, "background-color: #081E25; color:rgb(255, 53, 127); padding:12px; font-size:1.5rem; font-weight: bold;")
+        window.console.log("%c ["+ time + "] " + message, "background-color: #081E25; color:rgb(87, 255, 53); padding:12px; font-size:1.5rem; font-weight: bold;")
     }
 
 }

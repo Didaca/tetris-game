@@ -8,17 +8,20 @@ import { ButtonRight } from './components/ButtonRight';
 import { ButtonRotate } from './components/ButtonRotate';
 import { Next } from './components/Next';
 import { Score } from './text/Score';
-import { NextText } from './text/NextText';
-import { ScoreText } from './text/ScoreText';
+import { NextText } from './text/TextNext';
+import { ScoreText } from './text/TextScore';
 import { UIContainer } from './components/UI';
 import { container } from 'tsyringe';
 import { Numbers } from './enums/Numbers';
 import Observables from './components/Observables';
+import AnimationsGSAP from './components/AnimationsGSAP';
+import { StartGame } from './components/StartGame';
 
 
 
 class Game {
     protected tamplate: Canvas | undefined;
+    protected startGameMask: StartGame | undefined;
     protected matrix: Matrix | undefined;
     protected logo: Logo | undefined;
     protected uiContainer: UIContainer | undefined;
@@ -31,6 +34,7 @@ class Game {
     protected scoreText: any;
     protected score: Score | undefined;
     protected _stepSpeed: number = 200;
+    protected _lazyTime: number = 6000;
 
 
 
@@ -40,6 +44,8 @@ class Game {
         Observables.LoadUpdateScore.subscribe(() => {this.updateScore()});
         Observables.UpdateScore.subscribe((v: number) => { this.score?.updateScore(v) });
         Observables.Pause.subscribe((y) => {this.setPauseGame(y)});
+        Observables.ToStartGame.subscribe(() => {this.gameLoop()});
+        this.introGame();        
     }
 
     protected afterTexturesInit(gameLoaded: boolean): void {
@@ -55,8 +61,8 @@ class Game {
             this.matrix = new Matrix(this.tamplate);
             this.showNextElement();
             this.updateButtons();
-            this.gameLoop();
         }
+        this.destroyIntro();
     }
 
     private gameLoop(): void {
@@ -111,6 +117,7 @@ class Game {
 
     private setResolves(): void {
         this.tamplate = container.resolve(Canvas);
+        this.startGameMask = container.resolve(StartGame);
         this.logo = container.resolve(Logo);
         this.uiContainer = container.resolve(UIContainer);
         this.buttonL = container.resolve(ButtonLeft);
@@ -123,6 +130,7 @@ class Game {
     }
 
     private loadGameContainers(game: Canvas): void {
+        game.addContainer(this.startGameMask);
         game.addContainer(this.logo);
         this.uiContainer?.addChild(this.buttonL);
         this.uiContainer?.addChild(this.buttonR);
@@ -144,10 +152,29 @@ class Game {
         Observables.Pause.next(false);
     }
 
+    private introGame() {
+        const allPoints: Array<HTMLElement | null> = [];
+        for (let index = 1; index < 4; index++) {
+            const point: HTMLElement | null = document.querySelector(`.point${index}`);
+            allPoints.push(point);
+        }
+        AnimationsGSAP.dotsAnime(allPoints);
+    }
+
+    private destroyIntro(): void {
+        const lazyLoading = setInterval(() => {
+            const intro: CSSStyleDeclaration | undefined = document.getElementById('intro-game')?.style;
+            intro?.setProperty('display', 'none');
+            AnimationsGSAP.destroyAnime('DotsAnime')
+            clearInterval(lazyLoading);
+        }, this._lazyTime);
+    }
+
 
 } // Game
 
 function load() {
+    // introGame();
     new Game();
 
     function render(): void {
@@ -157,5 +184,14 @@ function load() {
 
     render();
 } // load
+
+// function introGame() {
+//     const allPoints: Array<HTMLElement | null> = [];
+//     for (let index = 1; index < 4; index++) {
+//         const point: HTMLElement | null = document.querySelector(`.point${index}`);
+//         allPoints.push(point);
+//     }
+//     AnimationsGSAP.dotsAnime(allPoints);
+// }
 
 window.onload = load;

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,11 +10,21 @@
     <link rel="preload" type="otf" crossorigin="anonymous" href="resources/font/Dotrice-Regular.otf">
     <title>DVI-TETRIS</title>
 </head>
+
 <body>
     <span id="fake_e">a</span>
     <span id="fake_d">a</span>
+    <div id="intro-game" style="display: block;">
+        <img class="intro-logo" src="./resources/images/logo.png" alt="Game Logo">
+        <section id="loading-txt">
+            <span class="text">Loading</span><span class="point1">.</span><span class="point2">.</span><span
+                class="point3">.</span>
+        </section>
+
+    </div>
     <div id="game"></div>
     <div id="instruction"></div>
     <script src="/bundle.js"></script>
 </body>
+
 </html>
