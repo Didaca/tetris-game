@@ -1,11 +1,12 @@
 # Tetris Game with PIXI JS - Mobile version 
 
 - game "NEW DESIGN"
-!["New_Design"](src/readme/new_design.png)
+!["New_Design"](src/readme/introGame.png)
+!["New_Design"](src/readme/startGame.png)
+!["New_Design"](src/readme/game.png)
 
 ## Game info:
-- game font: "Teletoon lowercase" 
-- https://www.fontspace.com/teletoon-lowercase-font-f22257
+- game fonts: "EnergySpike, Dotrice" 
 - game png: GIMP
 - https://www.gimp.org/
 - game sound: PIXIJS Sound / Howler.js
