@@ -174,7 +174,6 @@ class Game {
 } // Game
 
 function load() {
-    // introGame();
     new Game();
 
     function render(): void {
@@ -185,13 +184,5 @@ function load() {
     render();
 } // load
 
-// function introGame() {
-//     const allPoints: Array<HTMLElement | null> = [];
-//     for (let index = 1; index < 4; index++) {
-//         const point: HTMLElement | null = document.querySelector(`.point${index}`);
-//         allPoints.push(point);
-//     }
-//     AnimationsGSAP.dotsAnime(allPoints);
-// }
 
 window.onload = load;
