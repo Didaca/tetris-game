@@ -16,6 +16,7 @@ import { Numbers } from './enums/Numbers';
 import Observables from './components/Observables';
 import AnimationsGSAP from './components/AnimationsGSAP';
 import { StartGame } from './components/StartGame';
+import { GameOver } from './components/GameOver';
 
 
 
@@ -88,6 +89,7 @@ class Game {
 
         if (this.matrix.isGameOver()) {
             clearInterval(this.engineGameIntervalId);
+            this.setGameOver();
             Log.log('GAME OVER!');
             return;
         }
@@ -168,6 +170,10 @@ class Game {
             AnimationsGSAP.destroyAnime('DotsAnime')
             clearInterval(lazyLoading);
         }, this._lazyTime);
+    }
+
+    private setGameOver(): void {
+        this.tamplate?.addContainer(container.resolve(GameOver));
     }
 
 
