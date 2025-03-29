@@ -4,6 +4,7 @@
 !["New_Design"](src/readme/introGame.png)
 !["New_Design"](src/readme/startGame.png)
 !["New_Design"](src/readme/game.png)
+!["New_Design"](src/readme/gameOver.png)
 
 ## Game info:
 - game fonts: "EnergySpike, Dotrice" 
