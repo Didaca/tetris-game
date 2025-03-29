@@ -5,6 +5,7 @@ import Observables from '../components/Observables';
 
 class Textures {
     protected logoTexture: any;
+    protected infoTexture: any;
     protected baseTexture: any;
     protected backgroundTexture: any;
     protected transparentTexture: any;
@@ -30,6 +31,7 @@ class Textures {
         Log.log('START ASSETS LOADING!');
 
         this.logoTexture = await PIXI.Assets.load('/resources/images/logo.png');
+        this.infoTexture = await PIXI.Assets.load('/resources/images/info.png');
         this.baseTexture = await PIXI.Assets.load('/resources/images/transparent.png');
         this.backgroundTexture = await PIXI.Assets.load('/resources/images/background.png');
         this.transparentTexture = await PIXI.Assets.load('/resources/images/transparent.png');
@@ -58,6 +60,8 @@ class Textures {
         switch (name) {
             case 'LOGO':
                 return this.logoTexture;
+            case 'INFO':
+                return this.infoTexture;
             case 'BACKGROUND':
                 return this.backgroundTexture;
             case 'TRANSPARENT':

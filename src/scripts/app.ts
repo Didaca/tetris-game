@@ -17,6 +17,7 @@ import Observables from './components/Observables';
 import AnimationsGSAP from './components/AnimationsGSAP';
 import { StartGame } from './components/StartGame';
 import { GameOver } from './components/GameOver';
+import { Info } from './components/Info';
 
 
 
@@ -25,6 +26,7 @@ class Game {
     protected startGameMask: StartGame | undefined;
     protected matrix: Matrix | undefined;
     protected logo: Logo | undefined;
+    protected info: Info | undefined;
     protected uiContainer: UIContainer | undefined;
     protected engineGameIntervalId: ReturnType<typeof setInterval>;
     protected buttonL: any;
@@ -121,6 +123,7 @@ class Game {
         this.tamplate = container.resolve(Canvas);
         this.startGameMask = container.resolve(StartGame);
         this.logo = container.resolve(Logo);
+        this.info = container.resolve(Info);
         this.uiContainer = container.resolve(UIContainer);
         this.buttonL = container.resolve(ButtonLeft);
         this.buttonR = container.resolve(ButtonRight);
@@ -133,6 +136,7 @@ class Game {
 
     private loadGameContainers(game: Canvas): void {
         game.addContainer(this.startGameMask);
+        game.addContainer(this.info);
         game.addContainer(this.logo);
         this.uiContainer?.addChild(this.buttonL);
         this.uiContainer?.addChild(this.buttonR);

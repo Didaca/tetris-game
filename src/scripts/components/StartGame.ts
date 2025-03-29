@@ -23,6 +23,7 @@ export class StartGame extends PIXI.Container {
         mask.beginFill();
         mask.drawRect(this.positionX, this.positionY, this.maskWidth, this.maskHeight);
         mask.endFill();
+        mask.alpha = 0.50;
 
         mask.eventMode = 'static';
         mask.on('touchstart', () => { this.destroyThis() });
