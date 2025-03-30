@@ -6,6 +6,7 @@ import Observables from '../components/Observables';
 class Textures {
     protected logoTexture: any;
     protected infoTexture: any;
+    protected levelTexture: any;
     protected baseTexture: any;
     protected backgroundTexture: any;
     protected transparentTexture: any;
@@ -30,10 +31,11 @@ class Textures {
     protected async init(): Promise<void> {
         Log.log('START ASSETS LOADING!');
 
+        this.backgroundTexture = await PIXI.Assets.load('/resources/images/background.png');
         this.logoTexture = await PIXI.Assets.load('/resources/images/logo.png');
         this.infoTexture = await PIXI.Assets.load('/resources/images/info.png');
+        this.levelTexture = await PIXI.Assets.load('/resources/images/level.png');
         this.baseTexture = await PIXI.Assets.load('/resources/images/transparent.png');
-        this.backgroundTexture = await PIXI.Assets.load('/resources/images/background.png');
         this.transparentTexture = await PIXI.Assets.load('/resources/images/transparent.png');
         this.cubeTexture = await PIXI.Assets.load('/resources/images/cube.png');
         this.cubeImage = await PIXI.Assets.load('/resources/images/cubeImage.png');
@@ -62,6 +64,8 @@ class Textures {
                 return this.logoTexture;
             case 'INFO':
                 return this.infoTexture;
+            case 'LEVEL':
+                return this.levelTexture;
             case 'BACKGROUND':
                 return this.backgroundTexture;
             case 'TRANSPARENT':

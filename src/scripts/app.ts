@@ -18,6 +18,7 @@ import AnimationsGSAP from './components/AnimationsGSAP';
 import { StartGame } from './components/StartGame';
 import { GameOver } from './components/GameOver';
 import { Info } from './components/Info';
+import { Level } from './components/Level';
 
 
 
@@ -27,6 +28,7 @@ class Game {
     protected matrix: Matrix | undefined;
     protected logo: Logo | undefined;
     protected info: Info | undefined;
+    protected level: Level | undefined;
     protected uiContainer: UIContainer | undefined;
     protected engineGameIntervalId: ReturnType<typeof setInterval>;
     protected buttonL: any;
@@ -124,6 +126,7 @@ class Game {
         this.startGameMask = container.resolve(StartGame);
         this.logo = container.resolve(Logo);
         this.info = container.resolve(Info);
+        this.level = container.resolve(Level);
         this.uiContainer = container.resolve(UIContainer);
         this.buttonL = container.resolve(ButtonLeft);
         this.buttonR = container.resolve(ButtonRight);
@@ -138,6 +141,7 @@ class Game {
         game.addContainer(this.startGameMask);
         game.addContainer(this.info);
         game.addContainer(this.logo);
+        game.addContainer(this.level);
         this.uiContainer?.addChild(this.buttonL);
         this.uiContainer?.addChild(this.buttonR);
         this.uiContainer?.addChild(this.buttonRotate);
