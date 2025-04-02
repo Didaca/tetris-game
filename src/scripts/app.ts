@@ -44,12 +44,12 @@ class Game {
 
 
     constructor() {
-        this.engineGameIntervalId = setInterval(() => { });
+        this.engineGameIntervalId = setInterval(() => {});
         Observables.LoadAssets.subscribe((b: boolean) => { this.afterTexturesInit(b) });
         Observables.LoadUpdateScore.subscribe(() => {this.updateScore()});
         Observables.UpdateScore.subscribe((v: number) => { this.score?.updateScore(v) });
         Observables.Pause.subscribe((y) => {this.setPauseGame(y)});
-        Observables.ToStartGame.subscribe(() => {this.gameLoop()});
+        Observables.ToStartGame.subscribe(this.gameLoop.bind(this));
         this.introGame();        
     }
 

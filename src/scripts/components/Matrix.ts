@@ -40,6 +40,7 @@ export class Matrix extends PIXI.Container implements IMatrix {
         this.baseTexture = Textures.getTexture('BASE');
         this.containerBounceX = Math.round((this.canvas.width - (this.spriteSize * this.matrixCol)) / 2);
         this.containerBounceY = Math.round((this.canvas.height - (this.spriteSize * this.matrixRow)) / 3);
+        Observables.ToReplaceRows.subscribe(this.replaceRows.bind(this));
         this.init();
 
     }
@@ -137,13 +138,13 @@ export class Matrix extends PIXI.Container implements IMatrix {
     private async goToAnimeLines(): Promise<void> {
         let r: any = Observables.LineToAnime.value;
         if (r === 29) {
-            await AnimationsGSAP.bottomLineAnime((this.children[r] as PIXI.Container).children as any, this);
+            await AnimationsGSAP.bottomLineAnime((this.children[r] as PIXI.Container).children as any);
             return;
         }
         if (r % 2 === 0) {
-            await AnimationsGSAP.evenLineAnime((this.children[r] as PIXI.Container).children as any, this);
+            await AnimationsGSAP.evenLineAnime((this.children[r] as PIXI.Container).children as any);
         } else {
-            await AnimationsGSAP.oddLineAnime((this.children[r] as PIXI.Container).children as any, this);
+            await AnimationsGSAP.oddLineAnime((this.children[r] as PIXI.Container).children as any);
         }
     }
 

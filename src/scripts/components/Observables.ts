@@ -7,7 +7,8 @@ export default class Observables {
     public static LoadUpdateScore: Subject<boolean> = new Subject();
     public static UpdateScore: Subject<number> = new Subject();
     public static Pause: Subject<boolean> = new Subject();
-    public static ToStartGame: Subject<boolean> = new Subject();
+    public static ToStartGame: Subject<void> = new Subject();
+    public static ToReplaceRows: Subject<void> = new Subject();
     public static LinesCount: BehaviorSubject<number> = new BehaviorSubject(0);
     public static LineToAnime: BehaviorSubject<number> = new BehaviorSubject(29);
     public static LinesInArray: BehaviorSubject<any> = new BehaviorSubject([]);

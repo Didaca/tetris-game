@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 import { container, singleton } from 'tsyringe';
 import Observables from './Observables';
 import { TextStartGame } from '../text/TextStartGame';
+import AnimationsGSAP from './AnimationsGSAP';
 
 
 @singleton()
@@ -30,10 +31,12 @@ export class StartGame extends PIXI.Container {
 
         this.addChild(mask);
         this.addChild(container.resolve(TextStartGame).text);
+        AnimationsGSAP.bounceAnime(this.getChildAt(1) as PIXI.Text);
     }
 
     private destroyThis(): void {
-        this.destroy(true);
-        Observables.ToStartGame.next(true);
+        this.destroy();
+        AnimationsGSAP.destroyAnime('BounceAnime');
+        Observables.ToStartGame.next();
     }
 }
